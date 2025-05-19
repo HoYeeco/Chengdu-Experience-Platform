@@ -1,5 +1,6 @@
 package com.cupk.controller;
 
+import com.cupk.pojo.Shop;
 import com.cupk.pojo.Subscriber;
 import com.cupk.service.SubscriberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +15,6 @@ public class SubscriberController {
     @Autowired
     private SubscriberService subscriberService;
 
-    @GetMapping("/subscriberList")//显示所有预订信息
-    public ModelAndView findALLSubscribers(@RequestParam(value = "page", defaultValue = "0") int page,
-                                           @RequestParam(value = "size", defaultValue = "10") int size,
-                                           @RequestParam(value = "search", defaultValue = "") String search) {
-        List<Subscriber> Subscribers = subscriberService.findALLSubscribers();
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("Subscribers", Subscribers);
-        mv.addObject("pagination", new Pagination(page, size, Subscribers.size()));
-        mv.addObject("searchQuery", search);
-        mv.setViewName("subscriberList");
-        return mv;
-    }
 
     @GetMapping("/Subscriber/{id}")//根据id查找预订信息
     public ModelAndView findSubscriberById(@PathVariable("id") int id) {
@@ -42,8 +31,8 @@ public class SubscriberController {
     }
 
     @PostMapping("/addSubscriber")
-    public ModelAndView addSubscriber(Subscriber subscriber) {
-        subscriberService.addSubscriber(subscriber);
+    public ModelAndView addSubscriber(Subscriber Subscriber) {
+        subscriberService.addSubscriber(Subscriber);
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/subscriberList");// 重定向到预订列表页面
         return mv;
@@ -74,13 +63,13 @@ public class SubscriberController {
         return mv;
     }
 
-    @GetMapping("/insertSubscribers")//批量提交预订
-    public String insertSubscribers() {
-        return "insertSubscribers";
+    @GetMapping("/deleteSubscribers")//批量删除预订
+    public String deleteSubscribers() {
+        return "deleteSubscribers";
     }
 
-    @PostMapping("/insertSubscribers")
-    public ModelAndView insertSubscribers(@RequestParam("ids")  String ids) {
+    @PostMapping("/deleteSubscribers")
+    public ModelAndView deleteSubscribers(@RequestParam("ids")  String ids) {
         String[] stringArray = ids.split(",");
         int[] id = new int[stringArray.length];
 
@@ -88,9 +77,37 @@ public class SubscriberController {
         for (int i = 0; i < stringArray.length; i++) {
             id[i] = Integer.parseInt(stringArray[i].trim());
         }
-        subscriberService.insertSubscribers(id);
+        subscriberService.deleteSubscribers(id);
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/subscriberList");
+        return mv;
+    }
+    // 添加处理查找请求的方法
+    @GetMapping("/searchSubscribers")
+    public ModelAndView searchShops(@RequestParam("keyword") String keyword) {
+        List<Subscriber> subscribers = subscriberService.searchSubscribers(keyword);
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("Subscribers", subscribers);
+        mv.setViewName("subscriberList");
+        return mv;
+    }
+
+    @GetMapping("/subscriberList")//显示所有预订信息
+    public ModelAndView findALLSubscribers(@RequestParam(value = "page", defaultValue = "1") int page,
+                                           @RequestParam(value = "size", defaultValue = "5") int size,
+                                           @RequestParam(value = "search", defaultValue = "") String search) {
+
+        // 计算偏移量
+        int offset = (page - 1) * size;
+        List<Subscriber> Subscribers = subscriberService.findSubscribersByPage(offset, size);
+        int totalItems = subscriberService.getTotalSubscribers();
+        int totalPages = (int) Math.ceil((double) totalItems / size);
+
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("Subscribers", Subscribers);
+        mv.addObject("pagination", new Pagination(page, size, totalPages));
+        mv.addObject("searchQuery", search);
+        mv.setViewName("subscriberList");
         return mv;
     }
 
@@ -100,10 +117,10 @@ public class SubscriberController {
         private int pageSize;
         private int totalPages;
 
-        public Pagination(int currentPage, int pageSize, int totalItems) {
+        public Pagination(int currentPage, int pageSize, int totalPages) {
             this.currentPage = currentPage;
             this.pageSize = pageSize;
-            this.totalPages = (int) Math.ceil((double) totalItems / pageSize);
+            this.totalPages = totalPages;
         }
 
         public int getCurrentPage() {

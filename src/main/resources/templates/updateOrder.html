@@ -161,7 +161,7 @@
                 <p class="text-neutral-500">请修改您的订单信息并保存</p>
             </div>
 
-            <form action="#" th:action="@{/updateOrder}" th:object="${order}" method="post" class="space-y-6">
+            <form th:action="@{/updateOrder}" th:object="${order}" method="post" class="space-y-6">
                 <input type="hidden" th:field="*{id}" />
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -171,7 +171,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fa-solid fa-user text-neutral-400"></i>
                             </div>
-                            <input type="text" th:field="*{customerName}" class="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入客户姓名" />
+                            <input type="text" th:field="*{name}" class="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入客户姓名" />
                         </div>
                     </div>
 
@@ -181,7 +181,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fa-solid fa-phone text-neutral-400"></i>
                             </div>
-                            <input type="text" th:field="*{customerPhone}" class="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入客户电话" />
+                            <input type="text" th:field="*{phone}" class="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入客户电话" />
                         </div>
                     </div>
 
@@ -191,7 +191,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fa-solid fa-box text-neutral-400"></i>
                             </div>
-                            <input type="text" th:field="*{productName}" class="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入商品名称" />
+                            <input type="text" th:field="*{product}" class="w-full pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom" placeholder="请输入商品名称" />
                         </div>
                     </div>
 
@@ -247,6 +247,7 @@
             </form>
         </div>
     </div>
+
 </main>
 
 <!-- 页脚 -->

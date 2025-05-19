@@ -44,6 +44,24 @@
                 box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1);
             }
         }
+        table {
+            color: #333; /* 表格字体颜色变深 */
+            font-size: 16px; /* 表格字体变大 */
+        }
+        table th {
+            text-align: center; /* 表头字体居中 */
+            font-size: 14px; /* 表头字体变大 */
+            color: #333; /* 表头字体颜色变深 */
+        }
+        header {
+            align-items: center;
+            /*导航栏不被覆盖*/
+            position: sticky; /* 固定导航栏 */
+            top: 0; /* 位于页面顶部 */
+            z-index: 100; /* 设置高z-index确保在最上层 */
+            width: 100%; /* 宽度占满页面 */
+            box-sizing: border-box; /* 包含内边距和边框 */
+        }
     </style>
 </head>
 <body class="bg-neutral min-h-screen font-inter">
@@ -134,21 +152,55 @@
 
 <main class="container mx-auto px-4 py-8">
     <div class="mb-6 flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-dark">预订信息列表</h2>
-        <a href="/addSubscriber" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-custom flex items-center">
-            <i class="fa-solid fa-plus mr-2"></i> 新增预订
-        </a>
+        <h2 class="text-2xl font-bold text-white">预订信息列表</h2>
+        <!-- 订单管理区域 -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+            <div class="flex flex-col sm:flex-row gap-3">
+                <form action="/searchSubscribers" method="get">
+                    <div class="flex items-center" space-x-10>
+                        <div class="relative">
+                            <input type="text" name="keyword" placeholder="搜索预订信息..."
+                                   class="pl-10 pr-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary/50 w-full sm:w-64" />
+                            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-r-lg transition-custom">
+                            搜索
+                        </button>
+                    </div>
+                </form>
+                <a href="/subscriberList" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-custom flex items-center">
+                    <i class="fa-solid  mr-2"></i>显示全部
+                </a>
+
+                <a href="/addSubscriber" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-custom flex items-center">
+                    <i class="fa-solid fa-plus mr-2"></i> 新增预订
+                </a>
+                <!-- 批量删除 -->
+                <div class="flex items-center">
+                    <button type="button" id="selectAllButton" class="bg-white-600  text-white px-4 py-2 rounded-md transition-custom">
+                        <input type="checkbox" id="selectAll" class="mr-2">
+                        <label for="selectAll" class="mr-3">全选</label>
+                    </button>
+                    <button type="button" id="batchDelete" class="bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded-md transition-custom">
+                        <i class="fa-solid fa-trash mr-2"></i>批量删除
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-<!--    订阅信息表格-->
-    <div class="bg-white rounded-xl shadow-card overflow-hidden">
+    <!--    订阅信息表格-->
+    <div class="bg-white/80 rounded-xl shadow-card overflow-hidden" >
         <div class="overflow-x-auto">
-            <table class="w-full">
+            <table class="w-full" >
                 <thead>
-                <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    <th class="px-6 py-3">ID</th>
+                <tr class="bg-gray-70 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3">
+                        <input type="checkbox" id="selectAllHeader">
+                    </th>
                     <th class="px-6 py-3">姓名</th>
                     <th class="px-6 py-3">性别</th>
+                    <th class="px-6 py-3">年龄</th>
                     <th class="px-6 py-3">身份证号</th>
                     <th class="px-6 py-3">电话</th>
                     <th class="px-6 py-3">参观时间</th>
@@ -156,25 +208,22 @@
                     <th class="px-6 py-3">操作</th>
                 </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200">
-                <tr class="hover:bg-gray-50 transition-custom" th:each="subscriber : ${subscribers}">
+                <tbody class="divide-y divide-gray-200 justify-between">
+                <tr class="hover:bg-gray-50 transition-custom" th:each="subscriber : ${Subscribers}">
                     <th><input type="checkbox" class="ids" th:value="${subscriber.id}"></th>
-                    <th class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${subscriber.id}"></th>
-                    <th>
-                        <a th:href="@{'/updateSubscriber/'+${subscriber.id}}">[[${subscriber.name}]]</a>
-                    </th>
                     <th class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${subscriber.name}"></th>
                     <th class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${subscriber.sex}"></th>
+                    <th class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${subscriber.age}"></th>
                     <th class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${subscriber.id_Card_Number}"></th>
                     <th class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${subscriber.phone}"></th>
-                    <th class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${#dates.format(subscriber.time,'yyyy-MM-dd')}"></th>
+                    <th class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${subscriber.time}"></th>
                     <th class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${subscriber.hdid}"></th>
                     <th class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex space-x-2">
-                            <a th:href="@{/updateSubscriber/__${subscriber.id}__}" class="text-primary hover:text-primary/80 transition-custom">
-                                <i class="fa-solid fa-pencil"></i> 编辑
+                            <a th:href="@{/updateSubscriber/+${subscriber.id}}" class="text-primary hover:text-primary/80 transition-custom">
+                                <i class="fa-solid fa-pencil"></i> 修改
                             </a>
-                            <a th:href="@{/deleteSubscriber/__${subscriber.id}__}" class="text-red-600 hover:text-red-800 transition-custom">
+                            <a th:href="@{/deleteSubscriber/+${subscriber.id}}" class="text-red-600 hover:text-red-800 transition-custom">
                                 <i class="fa-solid fa-trash"></i> 删除
                             </a>
                         </div>
@@ -188,41 +237,39 @@
         <div class="px-6 py-4 bg-white border-t border-gray-200">
             <div class="flex items-center justify-between">
                 <div class="flex-1 flex justify-between sm:hidden">
-                    <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <a th:href="@{/subscriberList(page=${pagination.currentPage - 1}, size=${pagination.pageSize})}"
+                       class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                       th:if="${pagination.currentPage > 1}">
                         上一页
                     </a>
-                    <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <a th:href="@{/subscriberList(page=${pagination.currentPage + 1}, size=${pagination.pageSize})}"
+                       class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                       th:if="${pagination.currentPage < pagination.totalPages}">
                         下一页
                     </a>
                 </div>
                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                     <div>
                         <p class="text-sm text-gray-700">
-                            显示第 <span class="font-medium">1</span> 到 <span class="font-medium">10</span> 条，共 <span class="font-medium">25</span> 条结果
+                            显示第 <span class="font-medium" th:text="${(pagination.currentPage - 1) * pagination.pageSize + 1}"></span> 到 <span class="font-medium" th:text="${(pagination.currentPage - 1) * pagination.pageSize + Subscribers.size()}"></span> 条，共 <span class="font-medium" th:text="${pagination.totalPages * pagination.pageSize}"></span> 条结果
                         </p>
                     </div>
                     <div>
                         <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <a th:href="@{/subscriberList(page=${pagination.currentPage - 1}, size=${pagination.pageSize})}"
+                               class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                               th:if="${pagination.currentPage > 1}">
                                 <span class="sr-only">上一页</span>
                                 <i class="fa-solid fa-chevron-left"></i>
                             </a>
-                            <a href="#" aria-current="page" class="z-10 bg-primary text-white relative inline-flex items-center px-4 py-2 border border-primary text-sm font-medium">
-                                1
+                            <a th:href="@{/subscriberList(page=${i}, size=${pagination.pageSize})}"
+                               th:each="i: ${#numbers.sequence(1, pagination.totalPages)}"
+                               th:class="${i == pagination.currentPage}? 'z-10 bg-primary text-white relative inline-flex items-center px-4 py-2 border border-primary text-sm font-medium' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium'">
+                                <span th:text="${i}"></span>
                             </a>
-                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                2
-                            </a>
-                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                3
-                            </a>
-                            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                                    ...
-                                </span>
-                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                5
-                            </a>
-                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <a th:href="@{/subscriberList(page=${pagination.currentPage + 1}, size=${pagination.pageSize})}"
+                               class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                               th:if="${pagination.currentPage < pagination.totalPages}">
                                 <span class="sr-only">下一页</span>
                                 <i class="fa-solid fa-chevron-right"></i>
                             </a>
@@ -231,7 +278,10 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <body class="bg-cover bg-center min-h-screen"
+          style="background-image: url('https://th.bing.com/th/id/R.49d25c0bb0a483e3701054255646a6dc?rik=h20Y1SPJ7xoiFw&riu=http%3a%2f%2fn.sinaimg.cn%2fsinacn22%2f470%2fw1242h828%2f20180426%2f048c-fztkpin8244987.jpg&ehk=57S6NxVgNV1D%2blxnrGldaMnZyg3XUYaMM6AQ3zOWw3w%3d&risl=&pid=ImgRaw&r=0');">
+    </body>
 </main>
 
 <footer class="bg-dark text-white py-8 mt-12">
@@ -292,26 +342,66 @@
         document.getElementById('userAccount').textContent = username;
     }
 
-    // 删除按钮点击事件
-    document.querySelectorAll('.fa-trash').forEach(btn => {
-        btn.parentElement.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (confirm('确定要删除这条预订信息吗？')) {
-                // 这里添加删除逻辑
-                alert('删除成功！');
-                // 刷新页面或更新列表
-                location.reload();
-            }
+    // 全选/取消全选功能
+    document.getElementById('selectAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.ids');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
         });
+        // 同步表头的全选框
+        document.getElementById('selectAllHeader').checked = this.checked;
     });
 
-    // 编辑按钮点击事件
-    document.querySelectorAll('.fa-pencil').forEach(btn => {
-        btn.parentElement.addEventListener('click', function(e) {
-            e.preventDefault();
-            // 这里添加编辑逻辑，跳转到编辑页面
-            alert('跳转到编辑页面！');
+    // 表头全选框控制
+    document.getElementById('selectAllHeader').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.ids');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
         });
+        // 同步顶部的全选框
+        document.getElementById('selectAll').checked = this.checked;
+    });
+
+    // 批量删除功能
+    document.getElementById('batchDelete').addEventListener('click', function() {
+        const selectedIds = Array.from(document.querySelectorAll('.ids:checked'))
+            .map(checkbox => checkbox.value);
+
+        if (selectedIds.length === 0) {
+            alert('请选择要删除的记录');
+            return;
+        }
+
+        if (confirm(`确定要删除选中的 ${selectedIds.length} 条预订信息吗？此操作不可撤销哦。`)) {
+            // 使用表单提交方式
+            const form = document.createElement('form');
+            form.action = '/deleteSubscribers';
+            form.method = 'post';
+
+            // 添加选中的ID作为隐藏字段
+            selectedIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'ids';
+                input.value = id;
+                form.appendChild(input);
+            });
+
+            // 如果项目启用了CSRF保护，需要添加CSRF令牌
+            // 下面的代码需要根据实际项目的CSRF配置进行调整
+            const csrfToken = document.querySelector('meta[name="_csrf"]');
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]');
+            if (csrfToken && csrfHeader) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = csrfHeader.content;
+                input.value = csrfToken.content;
+                form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
     });
 </script>
 </body>

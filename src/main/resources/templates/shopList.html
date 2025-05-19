@@ -133,8 +133,8 @@
 <main class="flex-grow container mx-auto px-4 py-8">
     <!-- 页面标题 -->
     <div class="text-center mb-10">
-        <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-dark mb-2">成都必吃榜单</h1>
-        <p class="text-gray-600 max-w-2xl mx-auto">和我在成都的街头走一走，走进大街小巷餐馆里头</p>
+        <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-white mb-2">成都必吃榜单</h1>
+        <p class="text-gray-600 max-w-2xl mx-auto text-white">和我在成都的街头走一走，走进大街小巷餐馆里头</p>
         <div class="w-20 h-1 bg-secondary mx-auto mt-4 rounded-full"></div>
     </div>
 
@@ -192,7 +192,7 @@
 
     <!-- 订单管理区域 -->
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-dark mb-4 md:mb-0">喜欢就留个好评吧</h2>
+        <h2 class="text-2xl font-bold text-white mb-4 md:mb-0">喜欢就留个好评吧</h2>
         <div class="flex flex-col sm:flex-row gap-3">
             <form action="/searchShops" method="get">
             <div class="flex items-center" space-x-10>
@@ -221,7 +221,6 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                 <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">店铺名称</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">店铺位置</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">人均消费</th>
@@ -231,17 +230,16 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                 <tr th:each="shop : ${Shops}" class="hover:bg-gray-50 transition-custom">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${shop.id}"></td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${shop.shopName}"></td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${shop.shopLocation}"></td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${shop.shopCost}"></td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${shop.liker}"></td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <a th:href="@{'/updateShop/'+${shop.id}}" class="text-secondary hover:text-secondary/80 mr-3 transition-custom">
-                            <i class="fa-solid fa-pencil"></i>
+                            <i class="fa-solid fa-pencil"></i>修改
                         </a>
                         <a th:href="@{'/deleteShop/'+${shop.id}}" class="text-accent hover:text-accent/80 transition-custom">
-                            <i class="fa-solid fa-trash"></i>
+                            <i class="fa-solid fa-trash"></i>删除
                         </a>
                     </td>
                 </tr>
@@ -249,36 +247,39 @@
             </table>
         </div>
 
-        <!-- 分页控件 -->
-        <div class="flex items-center justify-between mt-6">
-            <div class="text-sm text-gray-500">
-                显示 <span class="font-medium">1</span> 到 <span class="font-medium">5</span> 条，共 <span class="font-medium">2456</span> 条记录
-            </div>
-            <div class="flex space-x-2">
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    上一页
-                </button>
-                <button class="px-3 py-1 bg-primary text-white border border-primary rounded-md text-sm font-medium hover:bg-primary/90 transition-custom">
-                    1
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    2
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    3
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    4
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    5
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    下一页
-                </button>
-            </div>
+    <!-- 分页控件 -->
+    <div class="flex items-center justify-between mt-6 bg-white p-4 rounded-lg shadow-sm">
+        <div class="text-sm text-gray-500">
+            显示 <span class="font-medium">1</span> 到 <span class="font-medium">10</span> 条，共 <span class="font-medium" th:text="${Shops.size()}"></span> 条记录
+        </div>
+        <div class="flex space-x-2">
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                上一页
+            </button>
+            <button class="px-3 py-1 bg-primary text-white border border-primary rounded-md text-sm font-medium hover:bg-primary/90 transition-custom">
+                1
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                2
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                3
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                4
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                5
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                下一页
+            </button>
         </div>
     </div>
+    <!--背景图片-->
+    <body class="bg-cover bg-center min-h-screen"
+          style="background-image: url('https://tr-osdcp.qunarzz.com/tr-osd-tr-space/img/c10455ea7d6ae2291b8e88fd56110263.jpg_r_1360x1360x95_5fd5f02e.jpg');">
+    </body>
 </main>
 
 <!-- 页脚 -->

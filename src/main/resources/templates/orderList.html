@@ -40,6 +40,20 @@
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
         }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /*导航栏不被覆盖*/
+            position: sticky; /* 固定导航栏 */
+            top: 0; /* 位于页面顶部 */
+            z-index: 100; /* 设置高z-index确保在最上层 */
+            width: 100%; /* 宽度占满页面 */
+            box-sizing: border-box; /* 包含内边距和边框 */
+        }
     </style>
 </head>
 
@@ -55,6 +69,28 @@
         </div>
         <nav class="hidden md:flex items-center space-x-32">
             <a href="home" class="hover:text-secondary transition-custom font-medium">首页</a>
+
+            <!-- 看见成都下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    看见成都
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="attraction" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-university mr-2 text-primary"></i> 名胜古迹
+                        </a>
+                        <a href="food" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-utensils mr-2 text-primary"></i> 美食文化
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-mountain mr-2 text-primary"></i> 自然风光
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <!-- 活动中心下拉菜单 -->
             <div class="relative group">
                 <button class="flex items-center hover:text-secondary transition-custom font-medium">
@@ -71,27 +107,6 @@
                         </a>
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
                             <i class="fa-solid fa-calendar-check mr-2 text-primary"></i> 留言板
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 看见成都下拉菜单 -->
-            <div class="relative group">
-                <button class="flex items-center hover:text-secondary transition-custom font-medium">
-                    看见成都
-                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
-                </button>
-                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
-                    <div class="py-1" role="menu" aria-orientation="vertical">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                            <i class="fa-solid fa-university mr-2 text-primary"></i> 名胜古迹
-                        </a>
-                        <a href="food" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                            <i class="fa-solid fa-utensils mr-2 text-primary"></i> 美食文化
-                        </a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                            <i class="fa-solid fa-mountain mr-2 text-primary"></i> 自然风光
                         </a>
                     </div>
                 </div>
@@ -120,21 +135,21 @@
 
         <div class="flex items-center space-x-4">
             <button class="bg-secondary hover:bg-opacity-90 text-white px-4 py-2 rounded-md transition-custom">
-                <a href="login" id="userAccount" class="fa-solid fa-user-circle mr-1"></a>
+                <a href="#" id="userAccount" class="fa-solid fa-user-circle mr-1"></a>
             </button>
             <button class="md:hidden text-white text-xl">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
-    </div>
 </header>
+
 
 <!-- 主要内容区 -->
 <main class="flex-grow container mx-auto px-4 py-8">
     <!-- 页面标题 -->
     <div class="text-center mb-10">
-        <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-dark mb-2">文创商城订单列表</h1>
-        <p class="text-gray-600 max-w-2xl mx-auto">打卡成都特色文创周边，体验蜀地文化魅力</p>
+        <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-white mb-2">文创商城订单列表</h1>
+        <p class="text-gray-600 max-w-2xl mx-auto text-white">打卡成都特色文创周边，体验蜀地文化魅力</p>
         <div class="w-20 h-1 bg-secondary mx-auto mt-4 rounded-full"></div>
     </div>
 
@@ -197,64 +212,84 @@
     </div>
 
     <!-- 订单管理区域 -->
-    <div class="bg-white rounded-xl shadow-card p-6 mb-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-dark mb-4 md:mb-0">订单列表</h2>
-            <div class="flex flex-col sm:flex-row gap-3">
-                <div class="relative">
-                    <input type="text" placeholder="搜索订单..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 w-full sm:w-64">
-                    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+        <div class="flex flex-col sm:flex-row gap-3">
+            <form action="/searchOrders" method="get">
+                <div class="flex items-center" space-x-10>
+                    <div class="relative">
+                        <input type="text" name="keyword" placeholder="搜索订单..."
+                               class="pl-10 pr-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary/50 w-full sm:w-64" />
+                        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-r-lg transition-custom">
+                        搜索
+                    </button>
                 </div>
-                <button id="add-order-btn" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-custom flex items-center justify-center">
-                    <i class="fa-solid fa-plus mr-2"></i> 添加订单
+            </form>
+            <a href="/orderList" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-custom flex items-center">
+                <i class="fa-solid  mr-2"></i>显示全部
+            </a>
+
+            <a href="/addOrder" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-custom flex items-center">
+                <i class="fa-solid fa-plus mr-2"></i> 新增预订
+            </a>
+            <!-- 批量删除 -->
+            <div class="flex items-center">
+                <button type="button" id="selectAllButton" class="bg-white-600  text-white px-4 py-2 rounded-md transition-custom">
+                    <input type="checkbox" id="selectAll" class="mr-2">
+                    <label for="selectAll" class="mr-3">全选</label>
+                </button>
+                <button type="button" id="batchDelete" class="bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded-md transition-custom">
+                    <i class="fa-solid fa-trash mr-2"></i>批量删除
                 </button>
             </div>
         </div>
+    </div>
+    </div>
+
 
         <!-- 订单表格 -->
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                 <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">订单ID</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">客户信息</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商品名称</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数量</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">金额</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">下单时间</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
-                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                    <th scope="col" class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider"></th>
+                    <th scope="col" class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">客户</th>
+                    <th scope="col" class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">下单号码</th>
+                    <th scope="col" class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">商品名称</th>
+                    <th scope="col" class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">数量</th>
+                    <th scope="col" class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">金额</th>
+                    <th scope="col" class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">下单时间</th>
+                    <th scope="col" class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">状态</th>
+                    <th scope="col" class="px-6 py-3 text-center text-sm font-semibold text-gray-700 uppercase tracking-wider">操作</th>
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                <tr th:each="t_order : ${orders}" class="hover:bg-gray-50 transition-custom">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${t_order.id}"></td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900" th:text="${t_order.customerName}"></div>
-                                <div class="text-sm text-gray-500" th:text="${t_order.customerPhone}"></div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap" th:text="${t_order.productName}"></td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${t_order.quantity}"></td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${#numbers.formatDecimal(t_order.amount, 1, 2)}"></td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${#dates.format(t_order.time, 'yyyy-MM-dd')}"></td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                <!-- 表格内容行 -->
+                <tr th:each="order : ${orders}" class="hover:bg-gray-50 transition-all duration-200">
+                    <th><input type="checkbox" class="ids" th:value="${order.id}"></th>
+                    <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${order.name}"></th>
+                    <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${order.phone}"></th>
+                    <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${order.product}"></th>
+                    <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${order.quantity}"></th>
+                    <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${order.amount}"></th>
+                    <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${#dates.format(order.time, 'yyyy-MM-dd HH:mm:ss')}"></th>
+                    <th class="px-6 py-4 text-center">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-                                      th:class="${t_order.status == '已发货'? 'bg-blue-100 text-blue-800' : (t_order.status == '处理中'? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800')}"
-                                      th:text="${t_order.status}"></span>
-                    </td>
+                                      th:class="${order.status == '已发货'? 'bg-blue-100 text-blue-800' : (order.status == '处理中'? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800')}"
+                                      th:text="${order.status}"></span>
+                    </th>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button class="text-primary hover:text-primary/80 mr-3 transition-custom">
-                            <i class="fa-solid fa-eye"></i>
+                            <i class="fa-solid fa-eye"></i>查看
                         </button>
-                        <a th:href="@{'/updateorder/'+${t_order.id}}" class="text-secondary hover:text-secondary/80 mr-3 transition-custom">
-                            <i class="fa-solid fa-pencil"></i>
+                        <a th:href="@{'/updateOrder/'+${order.id}}" class="text-secondary hover:text-secondary/80 mr-3 transition-custom">
+                            <i class="fa-solid fa-pencil"></i>修改
                         </a>
-                        <button class="text-accent hover:text-accent/80 transition-custom">
-                            <i class="fa-solid fa-trash"></i>
+                        <button>
+                        <a th:href="@{/deleteOrder/__${order.id}__}" class="text-accent hover:text-accent/80 transition-custom">
+                            <i class="fa-solid fa-trash"></i>删除
+                        </a>
                         </button>
                     </td>
                 </tr>
@@ -262,36 +297,40 @@
             </table>
         </div>
 
-        <!-- 分页控件 -->
-        <div class="flex items-center justify-between mt-6">
-            <div class="text-sm text-gray-500">
-                显示 <span class="font-medium">1</span> 到 <span class="font-medium">5</span> 条，共 <span class="font-medium">2456</span> 条记录
-            </div>
-            <div class="flex space-x-2">
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    上一页
-                </button>
-                <button class="px-3 py-1 bg-primary text-white border border-primary rounded-md text-sm font-medium hover:bg-primary/90 transition-custom">
-                    1
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    2
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    3
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    4
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    5
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                    下一页
-                </button>
-            </div>
+    <!-- 分页控件 -->
+    <div class="flex items-center justify-between mt-6 bg-white p-4 rounded-lg shadow-sm">
+        <div class="text-sm text-gray-500">
+            显示 <span class="font-medium">1</span> 到 <span class="font-medium">10</span> 条，共 <span class="font-medium" th:text="${orders.size()}"></span> 条记录
+        </div>
+        <div class="flex space-x-2">
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                上一页
+            </button>
+            <button class="px-3 py-1 bg-primary text-white border border-primary rounded-md text-sm font-medium hover:bg-primary/90 transition-custom">
+                1
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                2
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                3
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                4
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                5
+            </button>
+            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                下一页
+            </button>
         </div>
     </div>
+<!--背景图片-->
+    <body class="bg-cover bg-center min-h-screen opacity-70"
+          style="background-image: url('https://n.sinaimg.cn/sinakd20221210s/233/w1100h733/20221210/0eee-22946ec13ff0a46491762518fb5eeec7.jpg');">
+    </body>
+
 </main>
 
 <!-- 页脚 -->
@@ -337,110 +376,74 @@
     </div>
 </footer>
 
-<!-- 添加订单模态框 -->
-<div id="add-order-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div class="p-6 border-b border-gray-200 flex justify-between items-center">
-            <h3 class="text-xl font-bold text-dark">添加文创周边订单</h3>
-            <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="p-6">
-            <form id="add-order-form">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
-                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入姓名">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">电话号码</label>
-                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入电话号码">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">文创周边名称</label>
-                        <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
-                            <option value="">请选择文创周边名称</option>
-                            <option value="熊猫玩偶">熊猫玩偶</option>
-                            <option value="蜀绣手帕">蜀绣手帕</option>
-                            <option value="竹编工艺品">竹编工艺品</option>
-                            <option value="熊猫钥匙扣">熊猫钥匙扣</option>
-                            <option value="蜀绣丝巾">蜀绣丝巾</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">数量</label>
-                        <input type="number" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入数量">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">金额</label>
-                        <input type="number" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入金额">
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">备注</label>
-                    <textarea class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" rows="3" placeholder="请输入备注信息"></textarea>
-                </div>
-                <div class="mt-8 flex justify-end space-x-4">
-                    <button type="button" id="cancel-add-btn" class="px-6 py-2 border border-gray-300 rounded-md font-medium text-gray-700 hover:bg-gray-50 transition-custom">
-                        取消
-                    </button>
-                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-md font-medium hover:bg-primary/90 transition-custom">
-                        提交订单
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <script>
-    // 模态框控制
-    const addOrderBtn = document.getElementById('add-order-btn');
-    const closeModalBtn = document.getElementById('close-modal-btn');
-    const cancelAddBtn = document.getElementById('cancel-add-btn');
-    const addOrderModal = document.getElementById('add-order-modal');
-    const addOrderForm = document.getElementById('add-order-form');
-
-    // 打开模态框
-    addOrderBtn.addEventListener('click', () => {
-        addOrderModal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // 防止背景滚动
-    });
-
-    // 关闭模态框
-    function closeModal() {
-        addOrderModal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-        addOrderForm.reset(); // 重置表单
+    // 从 localStorage 获取用户名
+    const username = localStorage.getItem('username');
+    if (username) {
+        document.getElementById('userAccount').textContent = username;
     }
 
-    closeModalBtn.addEventListener('click', closeModal);
-    cancelAddBtn.addEventListener('click', closeModal);
-
-    // 点击模态框外部关闭
-    addOrderModal.addEventListener('click', (e) => {
-        if (e.target === addOrderModal) {
-            closeModal();
-        }
-    });
-
-    // 表单提交
-    addOrderForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // 这里添加表单提交逻辑
-        alert('订单提交成功！');
-        closeModal();
-    });
-
-    // 添加页面滚动效果
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+    // 全选/取消全选功能
+    document.getElementById('selectAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.ids');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
         });
+        // 同步表头的全选框
+        document.getElementById('selectAllHeader').checked = this.checked;
+    });
+
+    // 表头全选框控制
+    document.getElementById('selectAllHeader').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.ids');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+        // 同步顶部的全选框
+        document.getElementById('selectAll').checked = this.checked;
+    });
+
+    // 批量删除功能
+    document.getElementById('batchDelete').addEventListener('click', function() {
+        const selectedIds = Array.from(document.querySelectorAll('.ids:checked'))
+            .map(checkbox => checkbox.value);
+
+        if (selectedIds.length === 0) {
+            alert('请选择要删除的记录');
+            return;
+        }
+
+        if (confirm(`确定要删除选中的 ${selectedIds.length} 条预订信息吗？此操作不可撤销哦。`)) {
+            // 使用表单提交方式
+            const form = document.createElement('form');
+            form.action = '/deleteorders';
+            form.method = 'post';
+
+            // 添加选中的ID作为隐藏字段
+            selectedIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'ids';
+                input.value = id;
+                form.appendChild(input);
+            });
+
+            // 如果项目启用了CSRF保护，需要添加CSRF令牌
+            // 下面的代码需要根据实际项目的CSRF配置进行调整
+            const csrfToken = document.querySelector('meta[name="_csrf"]');
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]');
+            if (csrfToken && csrfHeader) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = csrfHeader.content;
+                input.value = csrfToken.content;
+                form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
     });
 </script>
 </body>

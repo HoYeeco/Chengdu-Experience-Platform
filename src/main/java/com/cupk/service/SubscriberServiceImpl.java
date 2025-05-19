@@ -1,6 +1,7 @@
 package com.cupk.service;
 
 import com.cupk.mapper.SubscriberMapper;
+import com.cupk.pojo.Shop;
 import com.cupk.pojo.Subscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -41,8 +42,22 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public void insertSubscribers(int[] ids) {//批量提交预订信息
-        SubscriberMapper.insertSubscribers(ids);
+    public void deleteSubscribers(int[] ids) {//批量提交预订信息
+        SubscriberMapper.deleteSubscribers(ids);
     }
 
+    @Override
+    public List<Subscriber> searchSubscribers(String keyword) {
+        return SubscriberMapper.searchSubscribers(keyword);
+    }
+
+    @Override
+    public List<Subscriber> findSubscribersByPage(int offset, int size) {
+        return SubscriberMapper.findSubscribersByPage(offset, size);
+    }
+
+    @Override
+    public int getTotalSubscribers() {
+        return SubscriberMapper.getTotalSubscribers();
+    }
 }

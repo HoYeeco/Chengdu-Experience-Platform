@@ -60,7 +60,7 @@ public class OrderController {
         return mv;
     }
 
-    @GetMapping("/toupdateorder/{id}")
+    @GetMapping("/updateOrder/{id}")
     public ModelAndView toUpdateOrder(@PathVariable("id") int id) {
         Order order = orderService.findOrderById(id);
         ModelAndView mv = new ModelAndView();
