@@ -81,7 +81,7 @@ public class OrderController {
     public ModelAndView deleteOrder(@PathVariable("id") int id) {
         orderService.deleteOrder(id);
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/ordersPage");
+        mv.setViewName("redirect:/orderList");
         return mv;
     }
 
@@ -89,7 +89,7 @@ public class OrderController {
     public ModelAndView deleteOrders(int[] id) {
         orderService.deleteOrders(id);
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/ordersPage");
+        mv.setViewName("redirect:/orderList");
         return mv;
     }
 

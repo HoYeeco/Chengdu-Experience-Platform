@@ -273,7 +273,7 @@
                     <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${order.product}"></th>
                     <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${order.quantity}"></th>
                     <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${order.amount}"></th>
-                    <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${#dates.format(order.time, 'yyyy-MM-dd HH:mm:ss')}"></th>
+                    <th class="px-6 py-4 text-center text-sm text-gray-900" th:text="${#dates.format(order.time, 'yyyy-MM-dd')}"></th>
                     <th class="px-6 py-4 text-center">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                                       th:class="${order.status == '已发货'? 'bg-blue-100 text-blue-800' : (order.status == '处理中'? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800')}"
@@ -287,7 +287,7 @@
                             <i class="fa-solid fa-pencil"></i>修改
                         </a>
                         <button>
-                        <a th:href="@{/deleteOrder/__${order.id}__}" class="text-accent hover:text-accent/80 transition-custom">
+                        <a th:href="@{'/deleteOrder/'+${order.id}}" class="text-accent hover:text-accent/80 transition-custom">
                             <i class="fa-solid fa-trash"></i>删除
                         </a>
                         </button>
@@ -417,7 +417,7 @@
         if (confirm(`确定要删除选中的 ${selectedIds.length} 条预订信息吗？此操作不可撤销哦。`)) {
             // 使用表单提交方式
             const form = document.createElement('form');
-            form.action = '/deleteorders';
+            form.action = '/deleteOrders';
             form.method = 'post';
 
             // 添加选中的ID作为隐藏字段

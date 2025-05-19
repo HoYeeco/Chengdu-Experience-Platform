@@ -11,7 +11,7 @@
 
     <insert id="addOrder" useGeneratedKeys="true" keyProperty="id">
         insert into t_order
-        values (null,#{name},#{product},#{quantity},#{amount},#{phone},#{time},#{status})
+        values (null,#{name},#{phone},#{product},#{quantity},#{amount},#{time},#{status})
     </insert>
 
     <select id="findOrderById" resultType="Order">
@@ -22,7 +22,7 @@
 
     <update id="updateOrder" parameterType="Order">
         update t_order set
-                                  name=#{name},product=#{product},quantity=#{quantity},amount=#{amount},phone=#{phone},time=#{time},status=#{status}
+                                  name=#{name},phone=#{phone},product=#{product},quantity=#{quantity},amount=#{amount},time=#{time},status=#{status}
         where id=#{id}
     </update>
 
