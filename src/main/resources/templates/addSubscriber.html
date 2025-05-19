@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加预订</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#008000', // 成都竹子绿
+                        secondary: '#F5A623', // 熊猫橙
+                        accent: '#E63946', // 辣椒红
+                        neutral: '#F9F6F0', // 熊猫白
+                        dark: '#333333', // 深色文本
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .panda-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23008000' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .shadow-card {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            .transition-custom {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .gender-btn {
+                @apply px-4 py-2 rounded-md transition-custom border-2 cursor-pointer text-center;
+            }
+            .gender-btn-active {
+                @apply bg-primary text-white border-primary;
+            }
+            .gender-btn-inactive {
+                @apply bg-white text-gray-700 border-gray-300 hover:border-primary;
+            }
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky; /* 固定导航栏 */
+            top: 0; /* 位于页面顶部 */
+            z-index: 100; /* 设置高z-index确保在最上层 */
+            width: 100%; /* 宽度占满页面 */
+            box-sizing: border-box; /* 包含内边距和边框 */
+        }
+        .slider {
+            width: 100%;
+            height: 400px;
+            background-color: #f4f4f9;
+            margin-bottom: 20px;
+        }
+        video {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body class="bg-cover bg-center min-h-screen"
+      style="background-image: url('https://th.bing.com/th/id/R.49d25c0bb0a483e3701054255646a6dc?rik=h20Y1SPJ7xoiFw&riu=http%3a%2f%2fn.sinaimg.cn%2fsinacn22%2f470%2fw1242h828%2f20180426%2f048c-fztkpin8244987.jpg&ehk=57S6NxVgNV1D%2blxnrGldaMnZyg3XUYaMM6AQ3zOWw3w%3d&risl=&pid=ImgRaw&r=0');">
+
+<header class="bg-primary text-white shadow-md relative z-10">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="text-2xl font-bold flex items-center">
+                <i class="fa-solid fa-paw text-secondary mr-2"></i>
+                <span>云游天府</span>
+            </div>
+        </div>
+        <nav class="hidden md:flex items-center space-x-32">
+            <a href="home" class="hover:text-secondary transition-custom font-medium">首页</a>
+
+            <!-- 看见成都下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    看见成都
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="attraction" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-university mr-2 text-primary"></i> 名胜古迹
+                        </a>
+                        <a href="food" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-utensils mr-2 text-primary"></i> 美食文化
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-mountain mr-2 text-primary"></i> 自然风光
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 活动中心下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    活动中心
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="shopList" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-day mr-2 text-primary"></i> 探店打卡
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-plus mr-2 text-primary"></i> 志愿服务
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-check mr-2 text-primary"></i> 留言板
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 景点预订下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    景点预订
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="addSubscriber" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-plus mr-2 text-primary"></i> 现在预订
+                        </a>
+                        <a href="subscriberList" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-history mr-2 text-primary"></i> 历史信息
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="orderList" class="hover:text-secondary transition-custom font-medium">文创商城</a>
+        </nav>
+
+        <div class="flex items-center space-x-4">
+            <button class="bg-secondary hover:bg-opacity-90 text-white px-4 py-2 rounded-md transition-custom">
+                <a href="#" id="userAccount" class="fa-solid fa-user-circle mr-1"></a>
+            </button>
+            <button class="md:hidden text-white text-xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- 居中信息框 -->
+<div class="container mx-auto px-4 py-16 relative z-10">
+    <div class="max-w-md mx-auto bg-white/80 rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-xl">
+        <div class="p-6 sm:p-8">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-dark">添加预订信息</h2>
+                <p class="mt-1 text-gray-500">填写以下信息来完成您的预订</p>
+            </div>
+
+            <form action="/addSubscriber" th:object="${Subscriber}" method="post">
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
+                    <input type="text" id="name" name="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">性别</label>
+                    <div class="flex space-x-4">
+                        <div class="flex-1">
+                            <button type="button" id="maleBtn" class="gender-btn gender-btn-active" onclick="selectGender('男', this)">
+                                <i class="fa-solid fa-mars mr-2"></i>男
+                            </button>
+                            <input type="hidden" id="sex" name="sex" value="男">
+                        </div>
+                        <div class="flex-1">
+                            <button type="button" id="femaleBtn" class="gender-btn gender-btn-inactive" onclick="selectGender('女', this)">
+                                <i class="fa-solid fa-venus mr-2"></i>女
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="Id_Card_Number" class="block text-sm font-medium text-gray-700 mb-1">身份证号码</label>
+                    <input type="text" id="Id_Card_Number" name="Id_Card_Number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">预订电话</label>
+                    <input type="tel" id="phone" name="phone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="time" class="block text-sm font-medium text-gray-700 mb-1">参观时间</label>
+                    <input type="date" id="time" name="time" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" required>
+                </div>
+
+                <div class="mb-6">
+                    <label for="hdid" class="block text-sm font-medium text-gray-700 mb-1">参观地点</label>
+                    <input type="text" id="hdid" name="hdid" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" required>
+                </div>
+
+                <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-2.5 px-4 rounded-lg transition-custom flex items-center justify-center">
+                    <i class="fa-solid fa-paper-plane mr-2"></i> 提交
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 页脚 -->
+<footer class="bg-dark text-white py-8 relative z-10">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">云游天府</h3>
+                <p class="text-gray-400">在这里，和我们一起看见成都。</p>
+                <div class="flex space-x-4 mt-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-weixin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-weibo text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">快速链接</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">首页</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">文创产品</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">景点预订</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">关于我们</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">联系我们</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-map-marker-alt mt-1 mr-3 text-secondary"></i>
+                        <span class="text-gray-400">四川省成都市锦江区红星路三段1号</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa-solid fa-phone mr-3 text-secondary"></i>
+                        <span class="text-gray-400">400-888-6677</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa-solid fa-envelope mr-3 text-secondary"></i>
+                        <span class="text-gray-400">hoyeeco@outlook.com</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <p>© 2025 云游天府——成都特色一站式体验平台</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // 从 localStorage 获取用户名
+    const username = localStorage.getItem('username');
+    if (username) {
+        document.getElementById('userAccount').textContent = username;
+    }
+
+    // 设置日期输入框的最小值为今天
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('time').min = today;
+
+    // 性别选择按钮逻辑
+    function selectGender(gender, element) {
+        document.getElementById('sex').value = gender;
+
+        // 更新按钮样式
+        const buttons = document.querySelectorAll('.gender-btn');
+        buttons.forEach(btn => {
+            btn.classList.remove('gender-btn-active');
+            btn.classList.add('gender-btn-inactive');
+        });
+
+        element.classList.remove('gender-btn-inactive');
+        element.classList.add('gender-btn-active');
+    }
+
+    // 表单提交处理
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        // 表单验证可以在这里添加
+
+        // 显示提交中状态
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> 提交中...';
+
+        // 这里可以添加 AJAX 请求代码
+
+        // 模拟提交成功
+        setTimeout(() => {
+            alert('预订提交成功！');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i> 提交预订';
+        }, 1500);
+
+        // 阻止表单默认提交行为
+        // e.preventDefault();
+    });
+</script>
+</body>
+</html>

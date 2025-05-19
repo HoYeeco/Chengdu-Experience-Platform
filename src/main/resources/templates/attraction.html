@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>名胜古迹</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+        <script>
+            tailwind.config = {
+            theme: {
+            extend: {
+            colors: {
+            primary: '#8B4513', // 赭石色作为主色调，代表历史感
+            secondary: '#D2B48C', // 棕褐色作为辅助色
+            neutral: {
+            100: '#F8F9FA',
+            200: '#E9ECEF',
+            300: '#DEE2E6',
+            400: '#CED4DA',
+            500: '#ADB5BD',
+            600: '#6C757D',
+            700: '#495057',
+            800: '#343A40',
+            900: '#212529'
+            }
+            },
+            fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+            },
+            boxShadow: {
+            'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            'card-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            },
+            animation: {
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+            },
+            keyframes: {
+            fadeIn: {
+            '0%': { opacity: '0' },
+            '100%': { opacity: '1' },
+            },
+            slideUp: {
+            '0%': { transform: 'translateY(20px)', opacity: '0' },
+            '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+            }
+            },
+            }
+            }
+        </script>
+
+        <style type="text/tailwindcss">
+            @layer utilities {
+            .content-auto {
+            content-visibility: auto;
+            }
+            .text-shadow {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .text-shadow-lg {
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+            .bg-blur {
+            backdrop-filter: blur(8px);
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+            }
+            .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            }
+                header {
+                    background-color: #333;
+                    color: white;
+                    padding: 20px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    /*导航栏不被覆盖*/
+                    position: sticky; /* 固定导航栏 */
+                    top: 0; /* 位于页面顶部 */
+                    z-index: 100; /* 设置高z-index确保在最上层 */
+                    width: 100%; /* 宽度占满页面 */
+                    box-sizing: border-box; /* 包含内边距和边框 */
+                }
+            }
+        </style>
+    </head>
+    <body class="font-inter bg-neutral-100 text-neutral-800">
+
+    <header class="bg-primary text-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="text-2xl font-bold flex items-center">
+                    <i class="fa-solid fa-paw text-secondary mr-2"></i>
+                    <span>云游天府</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-32">
+                <a href="home" class="hover:text-secondary transition-custom font-medium">首页</a>
+
+                <!-- 看见成都下拉菜单 -->
+                <div class="relative group">
+                    <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                        看见成都
+                        <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                        <div class="py-1" role="menu" aria-orientation="vertical">
+                            <a href="attraction" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                <i class="fa-solid fa-university mr-2 text-primary"></i> 名胜古迹
+                            </a>
+                            <a href="food" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                <i class="fa-solid fa-utensils mr-2 text-primary"></i> 美食文化
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                <i class="fa-solid fa-mountain mr-2 text-primary"></i> 自然风光
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 活动中心下拉菜单 -->
+                <div class="relative group">
+                    <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                        活动中心
+                        <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                        <div class="py-1" role="menu" aria-orientation="vertical">
+                            <a href="shopList" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                <i class="fa-solid fa-calendar-day mr-2 text-primary"></i> 探店打卡
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                <i class="fa-solid fa-calendar-plus mr-2 text-primary"></i> 志愿服务
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                <i class="fa-solid fa-calendar-check mr-2 text-primary"></i> 留言板
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 景点预订下拉菜单 -->
+                <div class="relative group">
+                    <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                        景点预订
+                        <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                        <div class="py-1" role="menu" aria-orientation="vertical">
+                            <a href="addSubscriber" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                <i class="fa-solid fa-calendar-plus mr-2 text-primary"></i> 现在预订
+                            </a>
+                            <a href="subscriberList" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                <i class="fa-solid fa-history mr-2 text-primary"></i> 历史信息
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="orderList" class="hover:text-secondary transition-custom font-medium">文创商城</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <button class="bg-secondary hover:bg-opacity-90 text-white px-4 py-2 rounded-md transition-custom">
+                    <a href="#" id="userAccount" class="fa-solid fa-user-circle mr-1"></a>
+                </button>
+                <button class="md:hidden text-white text-xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+    </header>
+
+                        <!-- 移动端菜单按钮 -->
+                        <button id="menuBtn" class="md:hidden text-neutral-700 focus:outline-none">
+                            <i class="fa-solid fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- 移动端导航菜单 -->
+            <div id="mobileMenu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+                <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+                    <a href="#home" class="text-neutral-700 hover:text-primary transition-colors py-2 border-b border-neutral-200">首页</a>
+                    <a href="#attractions" class="text-neutral-700 hover:text-primary transition-colors py-2 border-b border-neutral-200">古迹景点</a>
+                    <a href="#history" class="text-neutral-700 hover:text-primary transition-colors py-2 border-b border-neutral-200">历史文化</a>
+                    <a href="#gallery" class="text-neutral-700 hover:text-primary transition-colors py-2 border-b border-neutral-200">景点图库</a>
+                    <a href="#travel" class="text-neutral-700 hover:text-primary transition-colors py-2">旅游指南</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- 英雄区域 -->
+        <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="https://picsum.photos/id/1031/1920/1080" alt="成都全景" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70"></div>
+            </div>
+
+            <div class="container mx-auto px-4 z-10 text-center">
+                <h1 class="text-[clamp(2.5rem,6vw,4.5rem)] font-bold text-white mb-6 animate-fade-in text-shadow-lg">
+                    千年蜀都<br>古迹寻踪
+                </h1>
+                <p class="text-[clamp(1rem,2vw,1.25rem)] text-white/90 max-w-2xl mx-auto mb-10 animate-slide-up" style="animation-delay: 0.2s">
+                    探索成都的历史遗迹，感受这座千年古城的文化底蕴与岁月沉淀
+                </p>
+                <a href="#attractions" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-slide-up" style="animation-delay: 0.4s">
+                    开始探索 <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
+                <a href="#attractions" class="text-white/80 hover:text-white">
+                    <i class="fa-solid fa-chevron-down text-2xl"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- 景点介绍 -->
+        <section id="attractions" class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-neutral-900 mb-4">成都名胜古迹</h2>
+                    <p class="text-neutral-600 max-w-3xl mx-auto text-lg">穿越千年时光，探寻成都保存完好的历史遗迹，感受古代文明的辉煌与魅力</p>
+                    <div class="w-20 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 景点卡片1：武侯祠 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://picsum.photos/id/1015/600/400" alt="武侯祠" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                            <h3 class="absolute bottom-4 left-4 text-xl font-bold text-white">武侯祠</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-neutral-600 mb-4">纪念诸葛亮的专祠，是中国唯一的君臣合祀祠庙，占地面积15万平方米，由汉昭烈庙、武侯祠、惠陵、三义庙四部分组成。</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-primary font-medium">
+                                    <i class="fa-solid fa-map-marker-alt mr-1"></i> 武侯区武侯祠大街231号
+                                </span>
+                                <a href="#" class="text-neutral-800 hover:text-primary transition-colors">
+                                    了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 景点卡片2：杜甫草堂 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://picsum.photos/id/1039/600/400" alt="杜甫草堂" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                            <h3 class="absolute bottom-4 left-4 text-xl font-bold text-white">杜甫草堂</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-neutral-600 mb-4">中国唐代大诗人杜甫流寓成都时的故居，是现存杜甫行踪遗迹中规模最大、保存最完好、最具特色和知名度的一处。</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-primary font-medium">
+                                    <i class="fa-solid fa-map-marker-alt mr-1"></i> 青羊区青华路38号
+                                </span>
+                                <a href="#" class="text-neutral-800 hover:text-primary transition-colors">
+                                    了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 景点卡片3：金沙遗址 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://picsum.photos/id/1029/600/400" alt="金沙遗址" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                            <h3 class="absolute bottom-4 left-4 text-xl font-bold text-white">金沙遗址</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-neutral-600 mb-4">公元前12世纪至公元前7世纪长江上游古代文明中心——古蜀王国的都邑，出土了大量金器、玉器、青铜器等文物。</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-primary font-medium">
+                                    <i class="fa-solid fa-map-marker-alt mr-1"></i> 青羊区金沙遗址路2号
+                                </span>
+                                <a href="#" class="text-neutral-800 hover:text-primary transition-colors">
+                                    了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 景点卡片4：都江堰 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://picsum.photos/id/1036/600/400" alt="都江堰" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                            <h3 class="absolute bottom-4 left-4 text-xl font-bold text-white">都江堰</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-neutral-600 mb-4">全世界迄今为止，年代最久、唯一留存、仍在一直使用、以无坝引水为特征的宏大水利工程，被誉为"世界水利文化的鼻祖"。</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-primary font-medium">
+                                    <i class="fa-solid fa-map-marker-alt mr-1"></i> 都江堰市城西
+                                </span>
+                                <a href="#" class="text-neutral-800 hover:text-primary transition-colors">
+                                    了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 景点卡片5：青城山 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://picsum.photos/id/1037/600/400" alt="青城山" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                            <h3 class="absolute bottom-4 left-4 text-xl font-bold text-white">青城山</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-neutral-600 mb-4">中国道教发源地之一，属道教名山，林木青翠，四季常青，诸峰环峙，状若城廓，故名青城山，素有"青城天下幽"之称。</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-primary font-medium">
+                                    <i class="fa-solid fa-map-marker-alt mr-1"></i> 都江堰市青城山镇
+                                </span>
+                                <a href="#" class="text-neutral-800 hover:text-primary transition-colors">
+                                    了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 景点卡片6：文殊院 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://picsum.photos/id/1040/600/400" alt="文殊院" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                            <h3 class="absolute bottom-4 left-4 text-xl font-bold text-white">文殊院</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-neutral-600 mb-4">四川省重点文物保护单位，是中国长江上下游四大禅林之首，保存了大量的佛像、佛经、法器等文物，具有较高的文物价值。</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-primary font-medium">
+                                    <i class="fa-solid fa-map-marker-alt mr-1"></i> 青羊区文殊院街66号
+                                </span>
+                                <a href="#" class="text-neutral-800 hover:text-primary transition-colors">
+                                    了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <button class="bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white font-medium px-8 py-3 rounded-full transition-all duration-300">
+                        加载更多景点 <i class="fa-solid fa-refresh ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 历史文化 -->
+        <section id="history" class="py-20 bg-neutral-100">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-neutral-900 mb-4">成都的历史文化</h2>
+                    <p class="text-neutral-600 max-w-3xl mx-auto text-lg">探索这座千年古城的历史变迁与文化传承</p>
+                    <div class="w-20 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1">
+                        <h3 class="text-2xl font-bold text-neutral-900 mb-6">三千年城址未变的古都</h3>
+                        <p class="text-neutral-700 mb-4">
+                            成都有着4500余年的文明史，2300年左右的建城史，是中国历史最悠久的城市之一。自开明王朝九世迁蜀都城至此，成都名称一直未变，城址一直未徙，被誉为"中国历史文化名城"。
+                        </p>
+                        <p class="text-neutral-700 mb-4">
+                            历史上，成都曾先后成为蜀汉、成汉、前蜀、后蜀等政权的都城，创造了灿烂的古代文明。同时，成都也是南方丝绸之路的起点，是古代中国对外交流的重要门户。
+                        </p>
+                        <p class="text-neutral-700 mb-6">
+                            今天，成都不仅是四川省的政治、经济、文化中心，也是中国西南地区重要的交通枢纽和旅游胜地，吸引着来自世界各地的游客前来探索其丰富的历史文化遗产。
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <div class="text-3xl font-bold text-primary mb-2">2300+</div>
+                                <div class="text-neutral-600">年建城史</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <div class="text-3xl font-bold text-primary mb-2">15+</div>
+                                <div class="text-neutral-600">处全国重点文物保护单位</div>
+                            </div>
+                        </div>
+
+                        <a href="#" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-all duration-300">
+                            深入了解成都历史 <i class="fa-solid fa-book-open ml-2"></i>
+                        </a>
+                    </div>
+
+                    <div class="order-1 lg:order-2 relative">
+                        <div class="relative z-10 rounded-xl overflow-hidden shadow-xl">
+                            <img src="https://picsum.photos/id/1041/800/600" alt="成都历史" class="w-full h-auto">
+                        </div>
+                        <div class="absolute top-8 -right-8 -z-0 w-64 h-64 bg-secondary/30 rounded-full"></div>
+                        <div class="absolute -bottom-8 -left-8 -z-0 w-48 h-48 bg-primary/20 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 景点图库 -->
+        <section id="gallery" class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-neutral-900 mb-4">成都古迹图库</h2>
+                    <p class="text-neutral-600 max-w-3xl mx-auto text-lg">欣赏成都名胜古迹的精美图片</p>
+                    <div class="w-20 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="overflow-hidden rounded-lg group cursor-pointer">
+                        <img src="https://picsum.photos/id/1015/600/800" alt="武侯祠" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="bg-black/70 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <h4 class="font-bold mb-1">武侯祠</h4>
+                            <p class="text-sm">纪念诸葛亮的专祠</p>
+                        </div>
+                    </div>
+                    <div class="overflow-hidden rounded-lg group cursor-pointer">
+                        <img src="https://picsum.photos/id/1039/600/800" alt="杜甫草堂" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="bg-black/70 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <h4 class="font-bold mb-1">杜甫草堂</h4>
+                            <p class="text-sm">唐代诗人杜甫的故居</p>
+                        </div>
+                    </div>
+                    <div class="overflow-hidden rounded-lg group cursor-pointer">
+                        <img src="https://picsum.photos/id/1036/600/800" alt="都江堰" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="bg-black/70 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <h4 class="font-bold mb-1">都江堰</h4>
+                            <p class="text-sm">世界著名水利工程</p>
+                        </div>
+                    </div>
+                    <div class="overflow-hidden rounded-lg group cursor-pointer">
+                        <img src="https://picsum.photos/id/1037/600/800" alt="青城山" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="bg-black/70 text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <h4 class="font-bold mb-1">青城山</h4>
+                            <p class="text-sm">中国道教名山</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <button class="bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white font-medium px-8 py-3 rounded-full transition-all duration-300">
+                        查看更多图片 <i class="fa-solid fa-image ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 旅游指南 -->
+        <section id="travel" class="py-20 bg-neutral-100">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-neutral-900 mb-4">成都古迹旅游指南</h2>
+                    <p class="text-neutral-600 max-w-3xl mx-auto text-lg">为您的成都古迹之旅提供实用信息</p>
+                    <div class="w-20 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 交通指南 -->
+                    <div class="bg-white rounded-xl p-8 shadow-card hover:shadow-card-hover transition-all duration-300">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-map-signs text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-neutral-900 mb-4">交通指南</h3>
+                        <ul class="space-y-3 text-neutral-700">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>成都双流国际机场距离市区约16公里，有机场大巴和地铁连接市区</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>成都地铁覆盖了市区主要景点，出行方便快捷</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>共享单车是游览市区古迹的便捷选择</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>前往都江堰、青城山等郊区景点可乘坐高铁或旅游专线</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 最佳时间 -->
+                    <div class="bg-white rounded-xl p-8 shadow-card hover:shadow-card-hover transition-all duration-300">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-calendar-alt text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-neutral-900 mb-4">最佳旅游时间</h3>
+                        <ul class="space-y-3 text-neutral-700">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>春秋两季（3-5月、9-11月）是成都的最佳旅游季节，气候宜人</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>春季（3-4月）可以欣赏到成都周边的油菜花和桃花</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>秋季（9-10月）气候凉爽，适合户外活动</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>夏季（6-8月）较热，但青城山等山区是避暑胜地</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 实用贴士 -->
+                    <div class="bg-white rounded-xl p-8 shadow-card hover:shadow-card-hover transition-all duration-300">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa-solid fa-lightbulb text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-neutral-900 mb-4">实用贴士</h3>
+                        <ul class="space-y-3 text-neutral-700">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>提前购买景点门票，避免节假日排队</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>参观武侯祠、杜甫草堂等文化景点时，建议租用讲解器或参加导游团</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>成都美食众多，游玩之余别忘了品尝当地特色小吃</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check-circle text-primary mt-1 mr-2"></i>
+                                <span>尊重当地文化习俗，特别是在寺庙等宗教场所</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 订阅通讯 -->
+        <section class="py-16 bg-primary">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-white mb-4">订阅成都古迹最新资讯</h2>
+                    <p class="text-white/80 mb-8 text-lg">获取成都古迹的最新活动、展览和旅游攻略</p>
+
+                    <form class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto justify-center ">
+                        <button type="button" onclick="window.location.href='addSubscriber'" class=" bg-white text-primary hover:bg-neutral-100 font-medium px-20 py-3 rounded-lg transition-all duration-300">
+                            现在订阅 <i class="fa-solid fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                    <p class="text-white/60 text-sm mt-4">我们尊重您的隐私，绝不会分享您的个人信息</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer class="bg-neutral-900 text-white pt-16 pb-8">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-6">
+                            <i class="fa-solid fa-university text-primary text-2xl"></i>
+                            <span class="text-xl font-bold">成都古迹</span>
+                        </div>
+                        <p class="text-neutral-400 mb-6">感受千年古城的文化底蕴</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-neutral-400 hover:text-primary transition-colors">
+                                <i class="fa-brands fa-weibo"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-primary transition-colors">
+                                <i class="fa-brands fa-wechat"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-primary transition-colors">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-primary transition-colors">
+                                <i class="fa-brands fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-bold mb-6">快速链接</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#home" class="text-neutral-400 hover:text-primary transition-colors">首页</a></li>
+                            <li><a href="#attractions" class="text-neutral-400 hover:text-primary transition-colors">古迹景点</a></li>
+                            <li><a href="#history" class="text-neutral-400 hover:text-primary transition-colors">历史文化</a></li>
+                            <li><a href="#gallery" class="text-neutral-400 hover:text-primary transition-colors">景点图库</a></li>
+                            <li><a href="#travel" class="text-neutral-400 hover:text-primary transition-colors">旅游指南</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-bold mb-6">热门景点</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-neutral-400 hover:text-primary transition-colors">武侯祠</a></li>
+                            <li><a href="#" class="text-neutral-400 hover:text-primary transition-colors">杜甫草堂</a></li>
+                            <li><a href="#" class="text-neutral-400 hover:text-primary transition-colors">金沙遗址</a></li>
+                            <li><a href="#" class="text-neutral-400 hover:text-primary transition-colors">都江堰</a></li>
+                            <li><a href="#" class="text-neutral-400 hover:text-primary transition-colors">青城山</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-bold mb-6">联系我们</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-map-marker-alt text-primary mt-1 mr-3"></i>
+                                <span class="text-neutral-400">四川省成都市锦江区红星路三段1号</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-phone text-primary mt-1 mr-3"></i>
+                                <span class="text-neutral-400">400-8888-6677</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-envelope text-primary mt-1 mr-3"></i>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-neutral-800 pt-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <p class="text-neutral-500 text-sm mb-4 md:mb-0">© 2025 云游天府——成都特色一站式体验平台</p>
+                        <div class="flex space-x-6">
+                            <a href="#" class="text-neutral-500 hover:text-primary text-sm transition-colors">隐私政策</a>
+                            <a href="#" class="text-neutral-500 hover:text-primary text-sm transition-colors">使用条款</a>
+                            <a href="#" class="text-neutral-500 hover:text-primary text-sm transition-colors">Cookie 政策</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- 返回顶部按钮 -->
+        <button id="backToTop" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 z-50">
+            <i class="fa-solid fa-chevron-up"></i>
+        </button>
+
+        <script>
+            // 导航栏滚动效果
+            const navbar = document.getElementById('navbar');
+            const backToTop = document.getElementById('backToTop');
+
+            window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+            navbar.classList.add('bg-white', 'shadow-md');
+            navbar.classList.remove('bg-transparent');
+            backToTop.classList.remove('opacity-0', 'invisible');
+            backToTop.classList.add('opacity-100', 'visible');
+            } else {
+            navbar.classList.remove('bg-white', 'shadow-md');
+            navbar.classList.add('bg-transparent');
+            backToTop.classList.add('opacity-0', 'invisible');
+            backToTop.classList.remove('opacity-100', 'visible');
+            }
+            });
+
+            // 移动端菜单
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            menuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            if (menuBtn.innerHTML.includes('bars')) {
+            menuBtn.innerHTML = '<i class="fa-solid fa-times text-xl"></i>';
+            } else {
+            menuBtn.innerHTML = '<i class="fa-solid fa-bars text-xl"></i>';
+            }
+            });
+
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+
+            if (targetElement) {
+            window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+            });
+
+            // 关闭移动菜单
+            if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            menuBtn.innerHTML = '<i class="fa-solid fa-bars text-xl"></i>';
+            }
+            }
+            });
+            });
+
+            // 返回顶部
+            backToTop.addEventListener('click', function() {
+            window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+            });
+            });
+
+            // 图片懒加载
+            document.addEventListener("DOMContentLoaded", function() {
+            const lazyImages = [].slice.call(document.querySelectorAll("img"));
+
+            if ("IntersectionObserver" in window) {
+            let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+            let lazyImage = entry.target;
+            lazyImage.classList.add("fade-in");
+            lazyImageObserver.unobserve(lazyImage);
+            }
+            });
+            });
+
+            lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+            });
+            }
+            });
+        </script>
+    </body>
+</html>

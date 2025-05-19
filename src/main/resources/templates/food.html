@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成都美食文化</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8e0d00',// 小米辣红
+                        secondary: '#F5A623', // 熊猫橙
+                        accent: '#E63946', // 辣椒红
+                        neutral: '#F9F6F0', // 熊猫白
+                        dark: '#333333', // 深色文本
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .panda-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23008000' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .shadow-card {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            .transition-custom {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky; /* 固定导航栏 */
+            top: 0; /* 位于页面顶部 */
+            z-index: 100; /* 设置高z-index确保在最上层 */
+            width: 100%; /* 宽度占满页面 */
+            box-sizing: border-box; /* 包含内边距和边框 */
+        }
+        .slider {
+            width: 100%;
+            height: 400px;
+            background-color: #f4f4f9;
+            margin-bottom: 20px;
+        }
+        video {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<header class="bg-primary text-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="text-2xl font-bold flex items-center">
+                <i class="fa-solid fa-paw text-secondary mr-2"></i>
+                <span>云游天府</span>
+            </div>
+        </div>
+        <nav class="hidden md:flex items-center space-x-32">
+            <a href="home" class="hover:text-secondary transition-custom font-medium">首页</a>
+
+            <!-- 看见成都下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    看见成都
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="attraction" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-university mr-2 text-primary"></i> 名胜古迹
+                        </a>
+                        <a href="food" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-utensils mr-2 text-primary"></i> 美食文化
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-mountain mr-2 text-primary"></i> 自然风光
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 活动中心下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    活动中心
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="shopList" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-day mr-2 text-primary"></i> 探店打卡
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-plus mr-2 text-primary"></i> 志愿服务
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-check mr-2 text-primary"></i> 留言板
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 景点预订下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    景点预订
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="addSubscriber" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-plus mr-2 text-primary"></i> 现在预订
+                        </a>
+                        <a href="subscriberList" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-history mr-2 text-primary"></i> 历史信息
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="orderList" class="hover:text-secondary transition-custom font-medium">文创商城</a>
+        </nav>
+
+        <div class="flex items-center space-x-4">
+            <button class="bg-secondary hover:bg-opacity-90 text-white px-4 py-2 rounded-md transition-custom">
+                <a href="#" id="userAccount" class="fa-solid fa-user-circle mr-1"></a>
+            </button>
+            <button class="md:hidden text-white text-xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+</header>
+
+<!-- 英雄区 -->
+<section id="hero" class="relative h-screen flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img src="https://picsum.photos/id/292/1920/1080" alt="成都美食" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/30"></div>
+    </div>
+    <div class="container mx-auto px-4 z-10 text-center">
+        <h1 class="text-[clamp(2.5rem,8vw,5rem)] font-extrabold text-white mb-6 text-shadow-lg animate-fade-in">
+            成都美食
+        </h1>
+        <p class="text-[clamp(1.2rem,3vw,1.8rem)] text-white mb-8 max-w-3xl mx-auto text-shadow">
+            探索天府之国的麻辣鲜香，感受舌尖上的千年传承
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="#featured" class="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+                探索美食
+            </a>
+            <a href="#video" class="px-8 py-3 bg-transparent border-2 border-white hover:bg-white/10 text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+                观看视频
+            </a>
+        </div>
+    </div>
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+        <a href="#featured" class="text-white opacity-80 hover:opacity-100 transition-opacity">
+            <i class="fa-solid fa-chevron-down text-2xl"></i>
+        </a>
+    </div>
+</section>
+
+<!-- 美食文化简介 -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-dark mb-4">成都美食文化</h2>
+            <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-3xl mx-auto text-lg">
+                成都，这座拥有千年历史的文化名城，不仅以其悠闲的生活节奏闻名，更以其丰富多样的美食文化享誉全球。
+                成都美食以"麻、辣、鲜、香、脆"为特色，融合了川菜的精髓，是中国四大菜系之一。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-neutral rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                    <i class="fa-solid fa-pepper-hot text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-4">麻辣鲜香</h3>
+                <p class="text-gray-600 text-center">
+                    成都美食以麻辣著称，但绝非简单的刺激，而是通过精心调配的香料，创造出层次丰富的味觉体验。
+                    无论是火锅、串串还是川菜，都能让你的味蕾沉浸在麻辣鲜香的世界中。
+                </p>
+            </div>
+
+            <div class="bg-neutral rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                    <i class="fa-solid fa-history text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-4">历史传承</h3>
+                <p class="text-gray-600 text-center">
+                    成都美食文化源远流长，可追溯至两千多年前。历经朝代变迁，融合了各方饮食文化，
+                    形成了如今独具特色的川菜体系，许多传统技艺已被列入非物质文化遗产。
+                </p>
+            </div>
+
+            <div class="bg-neutral rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                    <i class="fa-solid fa-users text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-4">社交文化</h3>
+                <p class="text-gray-600 text-center">
+                    成都人热爱美食，更热爱分享美食。火锅、串串等美食形式，不仅是味觉的享受，更是社交的桥梁。
+                    在成都，与朋友家人共享美食，是生活中不可或缺的一部分。
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 特色美食展示 -->
+<section id="featured" class="py-20 bg-neutral">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-dark mb-4">特色美食</h2>
+            <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-3xl mx-auto text-lg">
+                成都美食种类繁多，每一道都有其独特的风味和故事。以下是一些代表性的成都美食，带你领略天府之国的舌尖魅力。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- 美食卡片 1 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://picsum.photos/id/431/600/400" alt="成都火锅" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <h3 class="text-xl font-bold text-white text-shadow">成都火锅</h3>
+                        <p class="text-white/90 text-sm">麻辣鲜香，一烫倾心</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-4">
+                        成都火锅以麻辣著称，汤底由牛油、辣椒、花椒等多种香料熬制而成，口感醇厚，香气四溢。
+                        搭配各种新鲜食材，如毛肚、鸭肠、黄喉等，是成都人最喜爱的美食之一。
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star-half-stroke text-secondary"></i>
+                            <span class="ml-2 text-gray-600">4.5/5</span>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 font-medium flex items-center">
+                            了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 美食卡片 2 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://picsum.photos/id/488/600/400" alt="串串香" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <h3 class="text-xl font-bold text-white text-shadow">串串香</h3>
+                        <p class="text-white/90 text-sm">串串相连，美味无限</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-4">
+                        串串香是成都的特色小吃，将各种食材用竹签串起，放入滚烫的汤锅中煮熟，再蘸上特制的调料食用。
+                        价格实惠，口味多样，是成都街头巷尾最受欢迎的美食之一。
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <span class="ml-2 text-gray-600">5/5</span>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 font-medium flex items-center">
+                            了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 美食卡片 3 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://picsum.photos/id/493/600/400" alt="龙抄手" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <h3 class="text-xl font-bold text-white text-shadow">龙抄手</h3>
+                        <p class="text-white/90 text-sm">皮薄馅大，汤鲜味美</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-4">
+                        龙抄手是成都的传统小吃，皮薄馅大，口感细腻。汤汁由鸡骨、猪骨等熬制而成，清香鲜美。
+                        常见的口味有原汤、红油、鸡丝等，是成都人早餐的首选。
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star-half-stroke text-secondary"></i>
+                            <span class="ml-2 text-gray-600">4.5/5</span>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 font-medium flex items-center">
+                            了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 美食卡片 4 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://picsum.photos/id/494/600/400" alt="钟水饺" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <h3 class="text-xl font-bold text-white text-shadow">钟水饺</h3>
+                        <p class="text-white/90 text-sm">麻辣鲜香，回味无穷</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-4">
+                        钟水饺是成都的传统名小吃，以其创始人钟少白命名。水饺皮薄馅嫩，口感筋道。
+                        特制的红油调料由辣椒面、花椒面、芝麻等调制而成，麻辣鲜香，回味无穷。
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <span class="ml-2 text-gray-600">5/5</span>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 font-medium flex items-center">
+                            了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 美食卡片 5 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://picsum.photos/id/495/600/400" alt="担担面" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <h3 class="text-xl font-bold text-white text-shadow">担担面</h3>
+                        <p class="text-white/90 text-sm">麻辣鲜香，爽口开胃</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-4">
+                        担担面是成都的传统面食，因过去常由小贩挑担叫卖而得名。面条细薄，臊子肉质香酥，
+                        调料麻辣鲜香，口感丰富，是成都人喜爱的经典小吃。
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star-half-stroke text-secondary"></i>
+                            <span class="ml-2 text-gray-600">4.7/5</span>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 font-medium flex items-center">
+                            了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 美食卡片 6 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://picsum.photos/id/496/600/400" alt="麻婆豆腐" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <h3 class="text-xl font-bold text-white text-shadow">麻婆豆腐</h3>
+                        <p class="text-white/90 text-sm">麻辣鲜香，豆腐嫩滑</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-4">
+                        麻婆豆腐是四川传统名菜，以嫩豆腐和肉末为主要原料，辅以豆瓣酱、辣椒、花椒等调料烹制而成。
+                        麻、辣、烫、香、酥、嫩、鲜成为其独特的风味特点。
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <span class="ml-2 text-gray-600">5/5</span>
+                        </div>
+                        <button class="text-primary hover:text-primary/80 font-medium flex items-center">
+                            了解更多 <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-12">
+            <button class="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+                查看更多美食
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- 美食视频 -->
+<section id="video" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-dark mb-4">美食视频</h2>
+            <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-3xl mx-auto text-lg">
+                观看成都美食制作过程，感受川菜的独特魅力。从选材到烹饪，每一个细节都展现了成都美食的精髓。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+                <div class="aspect-video bg-gray-100 rounded-xl overflow-hidden shadow-xl relative group">
+                    <img src="https://picsum.photos/id/429/1200/675" alt="成都火锅制作过程" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button class="w-20 h-20 bg-primary/90 rounded-full flex items-center justify-center transform transition-transform duration-300 group-hover:scale-110">
+                            <i class="fa-solid fa-play text-white text-2xl"></i>
+                        </button>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                        <h3 class="text-xl font-bold text-white text-shadow">成都火锅制作全记录</h3>
+                        <p class="text-white/90 text-sm">探索地道成都火锅的秘密，从底料熬制到食材准备</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-neutral rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group">
+                    <div class="w-1/3 h-32 relative">
+                        <img src="https://picsum.photos/id/430/300/200" alt="串串香制作" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button class="w-10 h-10 bg-primary/90 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-2/3 p-4">
+                        <h3 class="font-bold text-dark">串串香的麻辣诱惑</h3>
+                        <p class="text-gray-600 text-sm">24分钟</p>
+                    </div>
+                </div>
+
+                <div class="bg-neutral rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group">
+                    <div class="w-1/3 h-32 relative">
+                        <img src="https://picsum.photos/id/431/300/200" alt="川菜制作" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button class="w-10 h-10 bg-primary/90 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-2/3 p-4">
+                        <h3 class="font-bold text-dark">川菜大师的秘密</h3>
+                        <p class="text-gray-600 text-sm">32分钟</p>
+                    </div>
+                </div>
+
+                <div class="bg-neutral rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group">
+                    <div class="w-1/3 h-32 relative">
+                        <img src="https://picsum.photos/id/432/300/200" alt="成都小吃" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button class="w-10 h-10 bg-primary/90 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-2/3 p-4">
+                        <h3 class="font-bold text-dark">成都街头小吃之旅</h3>
+                        <p class="text-gray-600 text-sm">28分钟</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 推荐餐厅 -->
+<section id="restaurants" class="py-20 bg-neutral">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-dark mb-4">推荐餐厅</h2>
+            <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-3xl mx-auto text-lg">
+                以下是成都本地人和游客都喜爱的美食餐厅，每一家都有其独特的风味和特色，带你领略地道的成都美食。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- 餐厅卡片 1 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative h-56 overflow-hidden">
+                    <img src="https://picsum.photos/id/433/600/400" alt="蜀大侠火锅" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    <div class="absolute top-4 right-4 bg-primary text-white text-sm font-bold px-3 py-1 rounded-full">
+                        火锅
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-dark">蜀大侠火锅</h3>
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <span class="ml-1 font-bold">4.8</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        以武侠文化为主题的火锅店，装修别具一格，菜品新鲜，锅底醇厚，是体验成都火锅文化的好去处。
+                    </p>
+                    <div class="flex items-center text-gray-500 text-sm mb-4">
+                        <i class="fa-solid fa-map-marker-alt mr-2"></i>
+                        <span>锦江区太古里附近</span>
+                    </div>
+                    <div class="flex items-center text-gray-500 text-sm mb-6">
+                        <i class="fa-solid fa-clock mr-2"></i>
+                        <span>10:00 - 23:00</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-primary font-bold">人均 ¥120</span>
+                        <button class="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all duration-300">
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 餐厅卡片 2 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative h-56 overflow-hidden">
+                    <img src="https://picsum.photos/id/434/600/400" alt="老码头火锅" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    <div class="absolute top-4 right-4 bg-primary text-white text-sm font-bold px-3 py-1 rounded-full">
+                        火锅
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-dark">老码头火锅</h3>
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <span class="ml-1 font-bold">4.7</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        成都老字号火锅店，以传统牛油锅底闻名，环境古色古香，服务周到，深受本地人和游客喜爱。
+                    </p>
+                    <div class="flex items-center text-gray-500 text-sm mb-4">
+                        <i class="fa-solid fa-map-marker-alt mr-2"></i>
+                        <span>武侯区锦里附近</span>
+                    </div>
+                    <div class="flex items-center text-gray-500 text-sm mb-6">
+                        <i class="fa-solid fa-clock mr-2"></i>
+                        <span>11:00 - 22:30</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-primary font-bold">人均 ¥110</span>
+                        <button class="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all duration-300">
+                            查看详情</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 餐厅卡片 23-->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative h-56 overflow-hidden">
+                    <img src="https://picsum.photos/id/434/600/400" alt="老码头火锅" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    <div class="absolute top-4 right-4 bg-primary text-white text-sm font-bold px-3 py-1 rounded-full">
+                        火锅
+                    </div>
+                </div>
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold text-dark">老码头火锅</h3>
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-star text-secondary"></i>
+                        <span class="ml-1 font-bold">4.7</span>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    成都老字号火锅店，以传统牛油锅底闻名，环境古色古香，服务周到，深受本地人和游客喜爱。
+                </p>
+                <div class="flex items-center text-gray-500 text-sm mb-4">
+                    <i class="fa-solid fa-map-marker-alt mr-2"></i>
+                    <span>武侯区锦里附近</span>
+                </div>
+                <div class="flex items-center text-gray-500 text-sm mb-6">
+                    <i class="fa-solid fa-clock mr-2"></i>
+                    <span>11:00 - 22:30</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-primary font-bold">人均 ¥110</span>
+                    <button class="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all duration-300">
+                        查看详情</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+<!-- 探店打卡-->
+<section class="py-16 bg-primary">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-white mb-4">记录我的探店之旅</h2>
+            <p class="text-white/80 mb-8 text-lg">探索成都大街小巷，发现各种美食</p>
+
+            <form class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto justify-center ">
+                <button type="button" onclick="window.location.href='addShop'" class=" bg-white text-primary hover:bg-neutral-100 font-medium px-20 py-3 rounded-lg transition-all duration-300">
+                    我要推荐 <i class="fa-solid fa-paper-plane ml-2"></i>
+                </button>
+            </form>
+            <p class="text-white/60 text-sm mt-4">推荐您打卡过的良心餐馆，让更多人看见！</p>
+        </div>
+    </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="bg-dark text-white py-8">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">云游天府</h3>
+                <p class="text-gray-400">在这里，和我们一起看见成都。</p>
+                <div class="flex space-x-4 mt-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-weixin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-weibo text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">快速链接</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">首页</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">文创产品</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">景点预订</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">关于我们</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">联系我们</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-map-marker-alt mt-1 mr-3 text-secondary"></i>
+                        <span class="text-gray-400">四川省成都市锦江区红星路三段1号</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa-solid fa-phone mr-3 text-secondary"></i>
+                        <span class="text-gray-400">400-888-6677</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa-solid fa-envelope mr-3 text-secondary"></i>
+                        <span class="text-gray-400">hoyeeco@outlook.com</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <p>© 2025 云游天府——成都特色一站式体验平台</p>
+        </div>
+    </div>
+</footer>
+<script>
+    // 从 localStorage 获取用户名
+    const username = localStorage.getItem('username');
+    if (username) {
+        document.getElementById('userAccount').textContent = username;
+    }
+</script>
+</body>
+</html>

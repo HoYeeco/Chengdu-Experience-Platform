@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cupk.mapper.OrderMapper">
+    <!--查询所有订单信息-->
+    <select id="findALLOrders" resultType="Order">
+        select*
+        from t_order
+    </select>
+
+    <insert id="addOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_order
+        values (null,#{name},#{product},#{quantity},#{amount},#{phone},#{time},#{status})
+    </insert>
+
+    <select id="findOrderById" resultType="Order">
+        select *
+        from t_order
+        where id=#{id}
+    </select>
+
+    <update id="updateOrder" parameterType="Order">
+        update t_order set
+                                  name=#{name},product=#{product},quantity=#{quantity},amount=#{amount},phone=#{phone},time=#{time},status=#{status}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteOrder" parameterType="int">
+        delete from t_order where id=#{id}
+    </delete>
+
+    <delete id="deleteOrders">
+        delete from t_order where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="searchOrders" resultType="Order">
+        select *from t_order
+        <where>
+            <if test="name != null and name !=''">
+                AND name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="time != null and time !=''">
+                AND product LIKE CONCAT('%',#{time},'%')
+            </if>
+            <if test="hdid != null and hdid !=''">
+                AND amount LIKE CONCAT('%',#{hdid},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="searchOrdersByStr" parameterType="java.lang.String" resultType="Order">
+        select *from t_order
+        where 1 = 1
+        <if test="searchStr != null and searchStr != ''">
+            AND name LIKE CONCAT('%',#{searchStr},'%')
+            or id LIKE CONCAT('%',#{searchStr},'%')
+            or product LIKE CONCAT('%',#{searchStr},'%')
+            or phone LIKE CONCAT('%',#{searchStr},'%')
+            or time LIKE CONCAT('%',#{searchStr},'%')
+            or amount LIKE CONCAT('%',#{searchStr},'%')
+        </if>
+    </select>
+</mapper>

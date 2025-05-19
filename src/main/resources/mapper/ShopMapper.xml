@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cupk.mapper.ShopMapper">
+
+    <!--添加店铺信息-->
+    <insert id="addShop" useGeneratedKeys="true" keyProperty="id">
+        insert into t_shop
+        values (null,#{shopName},#{shopLocation},#{shopCost},#{liker})
+    </insert>
+
+    <!--修改店铺信息-->
+    <update id="updateShop" parameterType="Shop">
+        update t_shop set
+                          shopName=#{shopName}, shopLocation=#{shopLocation}, shopCost=#{shopCost}, liker=#{liker}
+        where id=#{id}
+    </update>
+
+    <!--删除店铺-->
+    <delete id="deleteShop" parameterType="int">
+        delete from t_shop where id=#{id}
+    </delete>
+    <!--查询所有店铺信息-->
+    <select id="findALLShops" resultType="Shop">
+        select*
+        from t_shop
+    </select>
+
+    <!--根据id查询店铺信息-->
+    <select id="findShopById" resultType="Shop">
+        select *
+        from t_shop
+        where id=#{id}
+    </select>
+
+    <!-- 查找店铺信息 -->
+    <select id="searchShops" resultType="Shop">
+        SELECT * FROM t_shop
+        WHERE shopName LIKE CONCAT('%', #{keyword}, '%')
+           OR shopLocation LIKE CONCAT('%', #{keyword}, '%')
+           OR liker LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+
+</mapper>

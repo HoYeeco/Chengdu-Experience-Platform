@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云游天府——成都特色一站式体验平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#008000', // 成都竹子绿
+                        secondary: '#F5A623', // 熊猫橙
+                        accent: '#E63946', // 辣椒红
+                        neutral: '#F9F6F0', // 熊猫白
+                        dark: '#333333', // 深色文本
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .panda-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23008000' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .shadow-card {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            .transition-custom {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .hover-scale {
+                transition: transform 0.3s ease;
+            }
+            .hover-scale:hover {
+                transform: scale(1.03);
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /*导航栏不被覆盖*/
+            position: sticky; /* 固定导航栏 */
+            top: 0; /* 位于页面顶部 */
+            z-index: 100; /* 设置高z-index确保在最上层 */
+            width: 100%; /* 宽度占满页面 */
+            box-sizing: border-box; /* 包含内边距和边框 */
+        }
+
+        .slider {
+            width: 100%;
+            height: 900px;
+            background-color: #f4f4f9;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1; /* 设置低于导航栏的z-index */
+        }
+
+        .slider img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* 图片宽度与页面等宽 */
+            height: 100%;
+            object-fit: cover; /* 确保图片完整显示 */
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slider img.active {
+            opacity: 1;
+        }
+
+        .slider button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 10; /* 确保按钮在图片上方 */
+        }
+
+        .slider button.prev {
+            left: 10px;
+        }
+
+        .slider button.next {
+            right: 10px;
+        }
+
+        /* 添加轮播图指示器样式 */
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .slider-dot.active {
+            background-color: #fff;
+        }
+
+        header.scrolled {
+            background-color: rgba(0, 128, 0, 0.95);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('https://picsum.photos/id/1036/1920/1080');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease forwards;
+            opacity: 0;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 400;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .btn-explore {
+            background-color: #F5A623;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s ease 0.6s forwards;
+            opacity: 0;
+        }
+
+        .btn-explore:hover {
+            background-color: #E69500;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 700;
+            color: #008000;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: #F5A623;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn-card {
+            background-color: #008000;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-card:hover {
+            background-color: #006600;
+            transform: translateY(-2px);
+        }
+
+        .food-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            height: 300px;
+        }
+
+        .food-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .food-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .food-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+            padding: 20px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .food-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .food-description {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .food-card:hover .food-description {
+            opacity: 1;
+            max-height: 100px;
+        }
+
+        .fact-item {
+            text-align: center;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: rgba(0, 128, 0, 0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .fact-item:hover {
+            background-color: rgba(0, 128, 0, 0.1);
+        }
+
+        .fact-icon {
+            font-size: 3rem;
+            color: #008000;
+            margin-bottom: 20px;
+        }
+
+        .fact-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .fact-text {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .travel-tip {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .travel-tip:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .travel-tip-icon {
+            font-size: 1.5rem;
+            color: #F5A623;
+            margin-right: 15px;
+        }
+
+        .travel-tip-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .travel-tip-text {
+            color: #666;
+            line-height: 1.6;
+        }
+
+    </style>
+</head>
+
+<body>
+<header class="bg-primary text-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="text-2xl font-bold flex items-center">
+                <i class="fa-solid fa-paw text-secondary mr-2"></i>
+                <span>云游天府</span>
+            </div>
+        </div>
+        <nav class="hidden md:flex items-center space-x-32">
+            <a href="home" class="hover:text-secondary transition-custom font-medium">首页</a>
+
+            <!-- 看见成都下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    看见成都
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="attraction" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-university mr-2 text-primary"></i> 名胜古迹
+                        </a>
+                        <a href="food" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-utensils mr-2 text-primary"></i> 美食文化
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-mountain mr-2 text-primary"></i> 自然风光
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 活动中心下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    活动中心
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="shopList" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-day mr-2 text-primary"></i> 探店打卡
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-plus mr-2 text-primary"></i> 志愿服务
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-check mr-2 text-primary"></i> 留言板
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 景点预订下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    景点预订
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="addSubscriber" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-plus mr-2 text-primary"></i> 现在预订
+                        </a>
+                        <a href="subscriberList" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-history mr-2 text-primary"></i> 历史信息
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="orderList" class="hover:text-secondary transition-custom font-medium">文创商城</a>
+        </nav>
+
+        <div class="flex items-center space-x-4">
+            <button class="bg-secondary hover:bg-opacity-90 text-white px-4 py-2 rounded-md transition-custom">
+                <a href="#" id="userAccount" class="fa-solid fa-user-circle mr-1"></a>
+            </button>
+            <button class="md:hidden text-white text-xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+</header>
+
+<!-- 轮播图 -->
+<div class="slider">
+    <!-- 这里可以添加轮播图的具体内容 -->
+    <img src="https://youimg1.c-ctrip.com/target/100g16000000yu2yg3254.jpg"
+         alt="锦里">
+    <img src="https://youimg1.c-ctrip.com/target/100910000000p33rk361D_D_10000_1200.jpg?proc=autoorient"
+         alt="大熊猫基地">
+    <img src="https://img.redocn.com/sheying/20190212/chengdujiuyanqiaoyejing_10121967.jpg"
+         alt="九眼桥">
+    <button class="prev" onclick="prevSlide()">&#10094;</button>
+    <button class="next" onclick="nextSlide()">&#10095;</button>
+<br>
+    <br>
+    <br>
+    <!-- 添加轮播图指示器 -->
+    <div class="slider-dots" id="sliderDots"></div>
+</div>
+
+<!-- 详细介绍 -->
+<section id="about" class="section bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="section-title">关于成都</h2>
+        <p class="section-subtitle">成都，简称蓉，别称蓉城、锦城，是四川省省会，中国西南地区重要的中心城市。</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+                <h3 class="text-2xl font-bold text-primary mb-4">千年古都，休闲之都</h3>
+                <p class="text-gray-700 mb-4">成都拥有2300多年的建城史，是古蜀文明的发祥地之一，历史上曾是蜀汉国都。如今，成都已发展成为中国西南地区的经济、文化、科技和交通中心。</p>
+                <p class="text-gray-700 mb-4">成都以悠闲的生活节奏、丰富的美食文化和独特的巴蜀风情闻名于世，被誉为"一座来了就不想走的城市"。</p>
+                <p class="text-gray-700 mb-4">作为中国最佳旅游城市之一，成都拥有众多世界知名的旅游景点，如大熊猫繁育研究基地、都江堰水利工程、武侯祠、锦里古街等。</p>
+
+                <div class="mt-8">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                            <i class="fa-solid fa-tree text-primary text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">国家森林城市</h4>
+                            <p class="text-gray-600">成都森林覆盖率超过40%，空气质量优良</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mr-4">
+                            <i class="fa-solid fa-utensils text-secondary text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">世界美食之都</h4>
+                            <p class="text-gray-600">成都拥有超过4万家餐厅，美食文化源远流长</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mr-4">
+                            <i class="fa-solid fa-paint-brush text-accent text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">历史文化名城</h4>
+                            <p class="text-gray-600">拥有6项世界遗产，23处国家重点文物保护单位</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="aspect-w-4 aspect-h-3 rounded-lg overflow-hidden shadow-xl">
+                    <img src="https://picsum.photos/id/1039/800/600" alt="成都城市风光" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -bottom-6 -left-6 w-40 h-40 rounded-lg overflow-hidden shadow-lg hidden md:block">
+                    <img src="https://picsum.photos/id/1040/200/200" alt="成都大熊猫" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -top-6 -right-6 w-32 h-32 rounded-lg overflow-hidden shadow-lg hidden md:block">
+                    <img src="https://picsum.photos/id/1041/160/160" alt="成都美食" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="attractions" class="section bg-neutral">
+    <div class="container mx-auto px-4">
+        <h2 class="section-title">景点推荐</h2>
+        <p class="section-subtitle">探索成都的自然风光与人文景观，感受这座城市的独特魅力。</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="card hover-scale">
+                <div class="card-image">
+                    <img src="https://picsum.photos/id/1037/600/400" alt="成都大熊猫繁育研究基地" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">成都大熊猫繁育研究基地</h3>
+                    <p class="card-text">位于成都市成华区，是世界著名的大熊猫科研繁育基地，也是全球最大的圈养大熊猫人工繁殖中心。</p>
+                    <a href="#" class="btn-card">
+                        <i class="fa-solid fa-arrow-right mr-2"></i>了解更多
+                    </a>
+                </div>
+            </div>
+
+            <div class="card hover-scale">
+                <div class="card-image">
+                    <img src="https://picsum.photos/id/1038/600/400" alt="都江堰水利工程" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">都江堰水利工程</h3>
+                    <p class="card-text">建于公元前256年，是世界上现存最古老且仍在使用的无坝引水工程，被誉为"世界水利文化的鼻祖"。</p>
+                    <a href="#" class="btn-card">
+                        <i class="fa-solid fa-arrow-right mr-2"></i>了解更多
+                    </a>
+                </div>
+            </div>
+
+            <div class="card hover-scale">
+                <div class="card-image">
+                    <img src="https://picsum.photos/id/1042/600/400" alt="锦里古街" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">锦里古街</h3>
+                    <p class="card-text">锦里是成都最古老的商业街之一，以三国文化为背景，集旅游购物、休闲娱乐为一体，展现了川西民风民俗。</p>
+                    <a href="#" class="btn-card">
+                        <i class="fa-solid fa-arrow-right mr-2"></i>了解更多
+                    </a>
+                </div>
+            </div>
+
+            <div class="card hover-scale">
+                <div class="card-image">
+                    <img src="https://picsum.photos/id/1043/600/400" alt="武侯祠" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">武侯祠</h3>
+                    <p class="card-text">纪念蜀汉丞相诸葛亮的专祠，是中国唯一的君臣合祀祠庙，占地面积15万平方米，由汉昭烈庙、武侯祠、惠陵、三义庙四部分组成。</p>
+                    <a href="#" class="btn-card">
+                        <i class="fa-solid fa-arrow-right mr-2"></i>了解更多
+                    </a>
+                </div>
+            </div>
+
+            <div class="card hover-scale">
+                <div class="card-image">
+                    <img src="https://picsum.photos/id/1044/600/400" alt="宽窄巷子" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">宽窄巷子</h3>
+                    <p class="card-text">由宽巷子、窄巷子和井巷子三条平行排列的老式街道组成，是成都市历史遗存的清末民初民居建筑群，被誉为"成都的会客厅"。</p>
+                    <a href="#" class="btn-card">
+                        <i class="fa-solid fa-arrow-right mr-2"></i>了解更多
+                    </a>
+                </div>
+            </div>
+
+            <div class="card hover-scale">
+                <div class="card-image">
+                    <img src="https://picsum.photos/id/1045/600/400" alt="青城山" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">青城山</h3>
+                    <p class="card-text">道教发源地之一，素有"青城天下幽"之称，是中国道教四大名山之一，山上有数十座道教宫观，被誉为"道教第五洞天"。</p>
+                    <a href="#" class="btn-card">
+                        <i class="fa-solid fa-arrow-right mr-2"></i>了解更多
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="food" class="section bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="section-title">美食文化</h2>
+        <p class="section-subtitle">成都被誉为"世界美食之都"，这里的美食以麻辣鲜香著称，让您回味无穷。</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="food-card hover-scale">
+                <img src="https://picsum.photos/id/1080/600/400" alt="火锅" loading="lazy">
+                <div class="food-overlay">
+                    <h3 class="food-title">成都火锅</h3>
+                    <p class="food-description">成都火锅以麻辣鲜香著称，锅底以牛油为主，配以多种香料和辣椒，涮煮各类食材，是成都人最喜爱的美食之一。</p>
+                </div>
+            </div>
+
+            <div class="food-card hover-scale">
+                <img src="https://picsum.photos/id/292/600/400" alt="串串香" loading="lazy">
+                <div class="food-overlay">
+                    <h3 class="food-title">串串香</h3>
+                    <p class="food-description">串串香是成都的特色小吃，将各种食材用竹签串起来，放入滚烫的汤锅中煮熟，再蘸上特制的调料食用，方便又美味。</p>
+                </div>
+            </div>
+
+            <div class="food-card hover-scale">
+                <img src="https://picsum.photos/id/431/600/400" alt="龙抄手" loading="lazy">
+                <div class="food-overlay">
+                    <h3 class="food-title">龙抄手</h3>
+                    <p class="food-description">龙抄手是成都著名的传统小吃，皮薄馅大，汤汁鲜美，有清汤、红汤、海味等多种口味，是成都人早餐的首选。</p>
+                </div>
+            </div>
+
+            <div class="food-card hover-scale">
+                <img src="https://picsum.photos/id/365/600/400" alt="钟水饺" loading="lazy">
+                <div class="food-overlay">
+                    <h3 class="food-title">钟水饺</h3>
+                    <p class="food-description">钟水饺是成都的传统名菜，以皮薄、肉馅饱满、调料独特而著称，上桌时淋上特制的红油，再配以蒜泥汁水，麻辣鲜香。</p>
+                </div>
+            </div>
+
+            <div class="food-card hover-scale">
+                <img src="https://picsum.photos/id/493/600/400" alt="担担面" loading="lazy">
+                <div class="food-overlay">
+                    <h3 class="food-title">担担面</h3>
+                    <p class="food-description">担担面是成都的传统面食，因最初由小贩挑着担子沿街叫卖而得名，面条细薄，卤汁酥香，咸鲜微辣，香气扑鼻。</p>
+                </div>
+            </div>
+
+            <div class="food-card hover-scale">
+                <img src="https://picsum.photos/id/488/600/400" alt="麻婆豆腐" loading="lazy">
+                <div class="food-overlay">
+                    <h3 class="food-title">麻婆豆腐</h3>
+                    <p class="food-description">麻婆豆腐是四川传统名菜，以嫩豆腐和肉末为主要原料，配以郫县豆瓣、辣椒面等调料烹制而成，麻辣鲜香，入口即化。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="tips" class="section bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="section-title">旅行贴士</h2>
+        <p class="section-subtitle">为您的成都之旅提供实用建议和注意事项。</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="travel-tip">
+                <div class="flex">
+                    <div class="travel-tip-icon">
+                        <i class="fa-solid fa-map"></i>
+                    </div>
+                    <div>
+                        <h3 class="travel-tip-title">最佳旅行时间</h3>
+                        <p class="travel-tip-text">成都的最佳旅游时间是春秋两季（3-5月、9-11月），这两个季节气候宜人，温度适中，适合户外活动和观光游览。夏季气温较高，冬季较为寒冷，但成都的室内场所大多有空调，所以也不受太大影响。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-tip">
+                <div class="flex">
+                    <div class="travel-tip-icon">
+                        <i class="fa-solid fa-money-bill"></i>
+                    </div>
+                    <div>
+                        <h3 class="travel-tip-title">消费水平</h3>
+                        <p class="travel-tip-text">成都的消费水平相对较低，特别是餐饮和住宿方面。一顿普通的川菜大约人均30-50元，中档餐厅人均80-150元。经济型酒店价格在150-300元/晚，高档酒店价格在500元以上/晚。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-tip">
+                <div class="flex">
+                    <div class="travel-tip-icon">
+                        <i class="fa-solid fa-bus"></i>
+                    </div>
+                    <div>
+                        <h3 class="travel-tip-title">交通出行</h3>
+                        <p class="travel-tip-text">成都的公共交通非常发达，地铁、公交、共享单车等多种出行方式可供选择。地铁是最快捷的出行方式，覆盖了市区的主要景点和商圈。公交车票价1-2元，使用天府通卡可享受优惠。共享单车方便短途出行，费用较低。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-tip">
+                <div class="flex">
+                    <div class="travel-tip-icon">
+                        <i class="fa-solid fa-language"></i>
+                    </div>
+                    <div>
+                        <h3 class="travel-tip-title">语言交流</h3>
+                        <p class="travel-tip-text">成都人主要使用四川话，但大多数人也能说普通话。在旅游景点、酒店、餐厅等场所，普通话交流没有问题。如果您想体验当地文化，可以学几句简单的四川话，如"你好"（ni hao）、"谢谢"（xie xie）、"多少钱"（duo shao qian）等。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-tip">
+                <div class="flex">
+                    <div class="travel-tip-icon">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <div>
+                        <h3 class="travel-tip-title">美食推荐</h3>
+                        <p class="travel-tip-text">成都美食众多，推荐尝试火锅、串串香、龙抄手、钟水饺、担担面、麻婆豆腐、回锅肉、夫妻肺片等。此外，成都的小吃街也是必去之处，如锦里、宽窄巷子、春熙路等，那里聚集了各种成都特色小吃。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-tip">
+                <div class="flex">
+                    <div class="travel-tip-icon">
+                        <i class="fa-solid fa-suitcase"></i>
+                    </div>
+                    <div>
+                        <h3 class="travel-tip-title">行李准备</h3>
+                        <p class="travel-tip-text">根据季节准备合适的衣物，春秋季可穿长袖衬衫、薄外套；夏季需穿短袖、短裤，注意防晒；冬季需穿羽绒服、毛衣等保暖衣物。此外，还需准备舒适的鞋子，因为成都有很多步行游览的景点。如果您计划去周边山区，还需带上保暖衣物和雨具。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- 页脚 -->
+<footer class="bg-dark text-white py-8">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">云游天府</h3>
+                <p class="text-gray-400">在这里，和我们一起看见成都。</p>
+                <div class="flex space-x-4 mt-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-weixin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-weibo text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">快速链接</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">首页</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">文创产品</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">景点预订</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-custom">关于我们</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">联系我们</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-map-marker-alt mt-1 mr-3 text-secondary"></i>
+                        <span class="text-gray-400">四川省成都市锦江区红星路三段1号</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa-solid fa-phone mr-3 text-secondary"></i>
+                        <span class="text-gray-400">400-888-6677</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa-solid fa-envelope mr-3 text-secondary"></i>
+                        <span class="text-gray-400">hoyeeco@outlook.com</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <p>© 2025 云游天府——成都特色一站式体验平台</p>
+        </div>
+    </div>
+</footer>
+<script>
+    // 从 localStorage 获取用户名
+    const username = localStorage.getItem('username');
+    if (username) {
+        document.getElementById('userAccount').textContent = username;
+    }
+
+    const slides = document.querySelectorAll('.slider img');
+    const sliderDots = document.getElementById('sliderDots');
+    let currentSlide = 0;
+    let slideInterval;
+
+    // 生成轮播图指示器
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('slider-dot');
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(index));
+        sliderDots.appendChild(dot);
+    });
+
+    function showSlide(index) {
+        // 隐藏所有图片
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+
+        // 移除所有指示器的active状态
+        document.querySelectorAll('.slider-dot').forEach(dot => {
+            dot.classList.remove('active');
+        });
+
+        // 显示当前图片和对应指示器
+        slides[index].classList.add('active');
+        document.querySelectorAll('.slider-dot')[index].classList.add('active');
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        showSlide(currentSlide);
+        resetInterval();
+    }
+
+    function resetInterval() {
+        // 清除现有定时器
+        if (slideInterval) clearInterval(slideInterval);
+        // 设置新的定时器
+        slideInterval = setInterval(nextSlide, 5000);
+    }
+
+    // 初始化显示第一张图片
+    showSlide(currentSlide);
+
+    // 启动自动切换
+    slideInterval = setInterval(nextSlide, 5000);
+
+    // 添加鼠标悬停暂停功能
+    const slider = document.querySelector('.slider');
+    slider.addEventListener('mouseenter', () => {
+        clearInterval(slideInterval);
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        resetInterval();
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美食榜单</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#008000', // 成都竹子绿
+                        secondary: '#F5A623', // 熊猫橙
+                        accent: '#E63946', // 辣椒红
+                        neutral: '#F9F6F0', // 熊猫白
+                        dark: '#333333', // 深色文本
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .panda-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23008000' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .shadow-card {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            .transition-custom {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+        }
+    </style>
+</head>
+
+<body class="font-inter bg-neutral panda-pattern min-h-screen flex flex-col">
+<!-- 顶部导航栏 -->
+<header class="bg-primary text-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="text-2xl font-bold flex items-center">
+                <i class="fa-solid fa-paw text-secondary mr-2"></i>
+                <span>云游天府</span>
+            </div>
+        </div>
+        <nav class="hidden md:flex items-center space-x-32">
+            <a href="home" class="hover:text-secondary transition-custom font-medium">首页</a>
+
+            <!-- 看见成都下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    看见成都
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="attraction" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-university mr-2 text-primary"></i> 名胜古迹
+                        </a>
+                        <a href="food" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-utensils mr-2 text-primary"></i> 美食文化
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-mountain mr-2 text-primary"></i> 自然风光
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 活动中心下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    活动中心
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="shopList" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-day mr-2 text-primary"></i> 探店打卡
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-plus mr-2 text-primary"></i> 志愿服务
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-check mr-2 text-primary"></i> 留言板
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 景点预订下拉菜单 -->
+            <div class="relative group">
+                <button class="flex items-center hover:text-secondary transition-custom font-medium">
+                    景点预订
+                    <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="py-1" role="menu" aria-orientation="vertical">
+                        <a href="addSubscriber" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-calendar-plus mr-2 text-primary"></i> 现在预订
+                        </a>
+                        <a href="subscriberList" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            <i class="fa-solid fa-history mr-2 text-primary"></i> 历史信息
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="orderList" class="hover:text-secondary transition-custom font-medium">文创商城</a>
+        </nav>
+
+        <div class="flex items-center space-x-4">
+            <button class="bg-secondary hover:bg-opacity-90 text-white px-4 py-2 rounded-md transition-custom">
+                <a href="#" id="userAccount" class="fa-solid fa-user-circle mr-1"></a>
+            </button>
+            <button class="md:hidden text-white text-xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+</header>
+
+<!-- 主要内容区 -->
+<main class="flex-grow container mx-auto px-4 py-8">
+    <!-- 页面标题 -->
+    <div class="text-center mb-10">
+        <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-dark mb-2">成都必吃榜单</h1>
+        <p class="text-gray-600 max-w-2xl mx-auto">和我在成都的街头走一走，走进大街小巷餐馆里头</p>
+        <div class="w-20 h-1 bg-secondary mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- 数据概览卡片 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-card p-6 border-l-4 border-primary transition-custom hover:shadow-lg">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">累计打卡</p>
+                    <h3 class="text-3xl font-bold mt-1">3,167次</h3>
+                    <p class="text-gray-600 text-sm mt-2">留下您的隆重推荐</p>
+                </div>
+                <div class="bg-primary/10 p-3 rounded-lg">
+                    <i class="fa-solid fa-file-invoice text-primary text-xl"></i>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-card p-6 border-l-4 border-secondary transition-custom hover:shadow-lg">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">客均消费</p>
+                    <h3 class="text-3xl font-bold mt-1">¥109</h3>
+                    <p class="text-gray-600 text-sm mt-2">好吃不贵</p>
+                </div>
+                <div class="bg-secondary/10 p-3 rounded-lg">
+                    <i class="fa-solid fa-cash-register text-secondary text-xl"></i>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-card p-6 border-l-4 border-accent transition-custom hover:shadow-lg">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">必吃榜首</p>
+                    <h3 class="text-xl font-bold mt-1">何师烧烤</h3>
+                    <p class="text-gray-600 text-sm mt-2">共1,583次推荐</p>
+                </div>
+                <div class="bg-accent/10 p-3 rounded-lg">
+                    <i class="fa-solid fa-star text-accent text-xl"></i>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-card p-6 border-l-4 border-primary transition-custom hover:shadow-lg">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">榜单点击量</p>
+                    <h3 class="text-3xl font-bold mt-1">11,894次</h3>
+                    <p class="text-gray-600 text-sm mt-2">成都美食哪家强，看成都必吃榜</p>
+                </div>
+                <div class="bg-primary/10 p-3 rounded-lg">
+                    <i class="fa-solid fa-smile text-primary text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 订单管理区域 -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-dark mb-4 md:mb-0">喜欢就留个好评吧</h2>
+        <div class="flex flex-col sm:flex-row gap-3">
+            <form action="/searchShops" method="get">
+            <div class="flex items-center" space-x-10>
+                <div class="relative">
+                    <input type="text" name="keyword" placeholder="搜索店铺..."
+                           class="pl-10 pr-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary/50 w-full sm:w-64" />
+                    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-r-lg transition-custom">
+                    搜索
+                </button>
+            </div>
+        </form>
+            <a href="/shopList" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-custom flex items-center">
+            <i class="fa-solid  mr-2"></i>显示全部
+        </a>
+
+            <a href="/addShop" class="bg-secondary hover:bg-secondary/90 text-white px-4 py-2 rounded-lg transition-custom flex items-center">
+                <i class="fa-solid fa-plus mr-2"></i>我要好评
+            </a>
+        </div>
+    </div>
+
+        <!-- 订单表格 -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">店铺名称</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">店铺位置</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">人均消费</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">好评内容</th>
+                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                <tr th:each="shop : ${Shops}" class="hover:bg-gray-50 transition-custom">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${shop.id}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${shop.shopName}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${shop.shopLocation}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${shop.shopCost}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${shop.liker}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a th:href="@{'/updateShop/'+${shop.id}}" class="text-secondary hover:text-secondary/80 mr-3 transition-custom">
+                            <i class="fa-solid fa-pencil"></i>
+                        </a>
+                        <a th:href="@{'/deleteShop/'+${shop.id}}" class="text-accent hover:text-accent/80 transition-custom">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 分页控件 -->
+        <div class="flex items-center justify-between mt-6">
+            <div class="text-sm text-gray-500">
+                显示 <span class="font-medium">1</span> 到 <span class="font-medium">5</span> 条，共 <span class="font-medium">2456</span> 条记录
+            </div>
+            <div class="flex space-x-2">
+                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                    上一页
+                </button>
+                <button class="px-3 py-1 bg-primary text-white border border-primary rounded-md text-sm font-medium hover:bg-primary/90 transition-custom">
+                    1
+                </button>
+                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                    2
+                </button>
+                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                    3
+                </button>
+                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                    4
+                </button>
+                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                    5
+                </button>
+                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-custom">
+                    下一页
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- 页脚 -->
+<footer class="bg-dark text-white py-8">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">云游天府</h3>
+                <p class="text-gray-400">在这里，和我们一起看见成都。</p>
+                <div class="flex space-x-4 mt-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-weixin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-weibo text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-custom">
+                        <i class="fa-brands fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">联系我们</h3>
+                <ul class="text-gray-400 space-y-2">
+                    <li>
+                        <i class="fa-solid fa-map-marker-alt mr-3 text-secondary"></i>
+                        <span>四川省成都市锦江区红星路三段1号</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-phone mr-3 text-secondary"></i>
+                        <span>400-888-6677</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-envelope mr-3 text-secondary"></i>
+                        <span>hoyeeco@outlook.com</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <p>© 2025 云游天府——成都特色一站式体验平台</p>
+        </div>
+    </div>
+</footer>
+
+
+<script>
+    // 模态框控制
+    const addOrderBtn = document.getElementById('add-order-btn');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const cancelAddBtn = document.getElementById('cancel-add-btn');
+    const addOrderModal = document.getElementById('add-order-modal');
+    const addOrderForm = document.getElementById('add-order-form');
+
+    // 打开模态框
+    addOrderBtn.addEventListener('click', () => {
+        addOrderModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // 防止背景滚动
+    });
+
+    // 关闭模态框
+    function closeModal() {
+        addOrderModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+    cancelAddBtn.addEventListener('click', closeModal);
+</script>
+</body>
+</html>

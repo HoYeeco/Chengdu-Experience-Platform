@@ -1,0 +1,26 @@
+server:
+    port: 8066
+spring:
+    application:
+        name: Chengdu
+    datasource:
+        username: root
+        password: 66776677
+        url: jdbc:mysql://127.0.0.1:3306/chengdu?userUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+        driver-class-name: com.mysql.cj.jdbc.Driver #驱动名称
+    thymeleaf: #模版引擎
+        cache: false #不使用缓存
+        encoding: UTF-8 #编码格式
+        mode: HTML5
+        suffix: .html #后缀
+        prefix: classpath:/templates/ #前缀
+mybatis:
+    type-aliases-package: com.cupk.pojo
+    mapper-locations: classpath*:/mapper/*.xml #加载此路径下的映射文件
+    configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+pagehelper:
+    helper-dialect: mysql
+    reasonable: true    #查询合理化，页数<1时查询第一页，页数>最后一页时查询最后一页
+    support-methods-arguments: true #确定是否自动分页
+    params: count=countsql
